@@ -7,6 +7,11 @@ import { Button } from "@/components/ui/button";
 import { formatDate, getInitials, generateAvatarColor } from "@/lib/utils";
 import { Loader2, ArrowLeft, Pencil, Trash2, Building2, User, Mail, MapPin, Briefcase, Calendar } from "lucide-react";
 import Link from "next/link";
+import { Modal } from "@/components/ui/modal";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Select } from "@/components/ui/select";
+import { useToast } from "@/components/ui/toast";
 
 interface LeadData {
   id: string;
@@ -35,6 +40,14 @@ export default function LeadDetailPage({ params }: { params: Promise<{ id: strin
   const { id } = use(params);
   const [lead, setLead] = useState<LeadData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [showDelete, setShowDelete] = useState(false);
+  const [showEdit, setShowEdit] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const { addToast } = useToast();
+  
+  const [form, setForm] = useState({
+    name: "", company: "", contact: "", email: "", address: "", needs: "", status: "new"
+  });
 
   useEffect(() => {
     const fetchLead = async () => {
@@ -43,6 +56,15 @@ export default function LeadDetailPage({ params }: { params: Promise<{ id: strin
       const data = await res.json();
       if (data.success) {
         setLead(data.data);
+        setForm({
+          name: data.data.name,
+          company: data.data.company || "",
+          contact: data.data.contact,
+          email: data.data.email || "",
+          address: data.data.address || "",
+          needs: data.data.needs || "",
+          status: data.data.status
+        });
       } else {
         router.push("/leads");
       }
@@ -50,6 +72,35 @@ export default function LeadDetailPage({ params }: { params: Promise<{ id: strin
     };
     fetchLead();
   }, [id, router]);
+
+  const handleEdit = async () => {
+    setSaving(true);
+    const res = await fetch(`/api/leads/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(form)
+    });
+    if (res.ok) {
+      addToast("success", "Lead berhasil diperbarui");
+      setLead((prev) => prev ? { ...prev, ...form, status: form.status as LeadData["status"] } : prev);
+      setShowEdit(false);
+    } else {
+      addToast("error", "Gagal memperbarui lead");
+    }
+    setSaving(false);
+  };
+
+  const handleDelete = async () => {
+    setSaving(true);
+    const res = await fetch(`/api/leads/${id}`, { method: "DELETE" });
+    if (res.ok) {
+      addToast("success", "Lead dihapus");
+      router.push("/leads");
+    } else {
+      addToast("error", "Gagal menghapus lead");
+      setSaving(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -91,10 +142,10 @@ export default function LeadDetailPage({ params }: { params: Promise<{ id: strin
         
         {/* Actions */}
         <div className="flex items-center gap-3 shrink-0">
-          <Button variant="outline" className="gap-2 bg-background-card hover:bg-background-hover">
+          <Button variant="outline" className="gap-2 bg-background-card hover:bg-background-hover" onClick={() => setShowEdit(true)}>
             <Pencil className="w-4 h-4" /> Edit
           </Button>
-          <Button variant="primary" className="gap-2 bg-error hover:bg-error/90 text-white shadow-none border-0">
+          <Button variant="primary" className="gap-2 bg-error hover:bg-error/90 text-white shadow-none border-0" onClick={() => setShowDelete(true)}>
             <Trash2 className="w-4 h-4" /> Delete
           </Button>
         </div>
@@ -188,6 +239,44 @@ export default function LeadDetailPage({ params }: { params: Promise<{ id: strin
           </Card>
         </div>
       </div>
+
+      {/* Edit Modal */}
+      <Modal open={showEdit} onClose={() => setShowEdit(false)} title="Edit Lead">
+        <div className="space-y-4">
+          <Input label="Nama Lead *" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
+          <Input label="Perusahaan" value={form.company} onChange={(e) => setForm({ ...form, company: e.target.value })} />
+          <Input label="Kontak / Telepon *" value={form.contact} onChange={(e) => setForm({ ...form, contact: e.target.value })} />
+          <Input label="Email" type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
+          <Textarea label="Alamat" value={form.address} onChange={(e) => setForm({ ...form, address: e.target.value })} />
+          <Textarea label="Kebutuhan" value={form.needs} onChange={(e) => setForm({ ...form, needs: e.target.value })} />
+          
+          <Select 
+            label="Status Lead"
+            id="lead-status"
+            options={Object.entries(statusConfig).map(([key, val]) => ({ value: key, label: val.label }))}
+            value={form.status}
+            onChange={(e) => setForm({ ...form, status: e.target.value })}
+          />
+          
+          <div className="flex justify-end gap-3 pt-4 border-t border-border">
+            <Button variant="outline" onClick={() => setShowEdit(false)}>Batal</Button>
+            <Button variant="primary" onClick={handleEdit} disabled={saving}>
+              {saving ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null} Simpan
+            </Button>
+          </div>
+        </div>
+      </Modal>
+
+      {/* Delete Modal */}
+      <Modal open={showDelete} onClose={() => setShowDelete(false)} title="Hapus Lead" size="sm">
+        <p className="text-sm text-foreground-secondary mb-4">Apakah Anda yakin ingin menghapus lead <strong>{lead.name}</strong>? Tindakan ini tidak dapat dibatalkan.</p>
+        <div className="flex justify-end gap-3">
+          <Button variant="outline" onClick={() => setShowDelete(false)}>Batal</Button>
+          <Button variant="primary" className="bg-error hover:bg-error/90" onClick={handleDelete} disabled={saving}>
+            {saving ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null} Hapus
+          </Button>
+        </div>
+      </Modal>
     </div>
   );
 }

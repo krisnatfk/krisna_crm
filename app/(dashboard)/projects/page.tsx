@@ -309,7 +309,7 @@ export default function ProjectsPage() {
                               <div className="grid grid-cols-2 gap-y-4 pt-4 border-t border-border-light">
                                 <div><p className="text-[11px] text-foreground-muted mb-1">Status</p><span className="text-[10px] px-2 py-0.5 rounded-md font-bold" style={{ backgroundColor: sc.bg, color: sc.color }}>{sc.label}</span></div>
                                 <div><p className="text-[11px] text-foreground-muted mb-1">Tanggal</p><p className="text-sm font-medium text-foreground">{formatDate(proj.created_at)}</p></div>
-                                <div className="col-span-2"><p className="text-[11px] text-foreground-muted mb-1">Total</p><p className="text-sm font-bold text-brand">{formatRupiah(Number(proj.total_amount))}</p></div>
+                                <div className="col-span-2"><p className="text-[11px] text-foreground-muted mb-1">Total</p><p className="text-sm font-bold text-foreground">{formatRupiah(Number(proj.total_amount))}</p></div>
                               </div>
                             </div>
                             {isExpanded && (
@@ -431,7 +431,7 @@ export default function ProjectsPage() {
           <div className="p-3 rounded-lg border border-border bg-background-muted">
             <div className="flex items-center justify-between">
               <span className="text-xs text-foreground-muted">Total Amount</span>
-              <span className="text-lg font-bold text-brand">{formatRupiah(totalAmount)}</span>
+              <span className="text-lg font-bold text-foreground">{formatRupiah(totalAmount)}</span>
             </div>
             {hasDiscountedItems && (
               <div className="flex items-center gap-2 mt-2 text-xs" style={{ color: "#d97706" }}>

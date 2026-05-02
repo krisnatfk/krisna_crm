@@ -7,6 +7,10 @@ import { Button } from "@/components/ui/button";
 import { formatDate, formatRupiah } from "@/lib/utils";
 import { Loader2, ArrowLeft, Pencil, Trash2, Box, Wifi, DollarSign, Activity, Calendar } from "lucide-react";
 import Link from "next/link";
+import { Modal } from "@/components/ui/modal";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/components/ui/toast";
 
 interface ProductData {
   id: string;
@@ -25,6 +29,14 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   const { id } = use(params);
   const [product, setProduct] = useState<ProductData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [showDelete, setShowDelete] = useState(false);
+  const [showEdit, setShowEdit] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const { addToast } = useToast();
+  
+  const [form, setForm] = useState({
+    name: "", description: "", speed: "", hpp: 0, margin_percent: 0, is_active: true
+  });
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -33,6 +45,14 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
       const data = await res.json();
       if (data.success) {
         setProduct(data.data);
+        setForm({
+          name: data.data.name,
+          description: data.data.description || "",
+          speed: data.data.speed || "",
+          hpp: data.data.hpp,
+          margin_percent: data.data.margin_percent,
+          is_active: data.data.is_active
+        });
       } else {
         router.push("/products");
       }
@@ -40,6 +60,36 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
     };
     fetchProduct();
   }, [id, router]);
+
+  const handleEdit = async () => {
+    setSaving(true);
+    const res = await fetch(`/api/products/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(form)
+    });
+    if (res.ok) {
+      addToast("success", "Produk berhasil diperbarui");
+      const computedSellPrice = form.hpp + (form.hpp * form.margin_percent) / 100;
+      setProduct((prev) => prev ? { ...prev, ...form, sell_price: computedSellPrice } : prev);
+      setShowEdit(false);
+    } else {
+      addToast("error", "Gagal memperbarui produk");
+    }
+    setSaving(false);
+  };
+
+  const handleDelete = async () => {
+    setSaving(true);
+    const res = await fetch(`/api/products/${id}`, { method: "DELETE" });
+    if (res.ok) {
+      addToast("success", "Produk dihapus");
+      router.push("/products");
+    } else {
+      addToast("error", "Gagal menghapus produk");
+      setSaving(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -79,10 +129,10 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
         
         {/* Actions */}
         <div className="flex items-center gap-3 shrink-0">
-          <Button variant="outline" className="gap-2 bg-background-card hover:bg-background-hover">
+          <Button variant="outline" className="gap-2 bg-background-card hover:bg-background-hover" onClick={() => setShowEdit(true)}>
             <Pencil className="w-4 h-4" /> Edit
           </Button>
-          <Button variant="primary" className="gap-2 bg-error hover:bg-error/90 text-white shadow-none border-0">
+          <Button variant="primary" className="gap-2 bg-error hover:bg-error/90 text-white shadow-none border-0" onClick={() => setShowDelete(true)}>
             <Trash2 className="w-4 h-4" /> Delete
           </Button>
         </div>
@@ -140,11 +190,11 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                 </div>
                 <div className="flex justify-between items-center p-4 px-5">
                   <span className="text-sm text-foreground-muted">Margin Keuntungan</span>
-                  <span className="text-sm font-medium text-success">+{product.margin_percent}%</span>
+                  <span className="text-sm font-medium text-foreground">+{product.margin_percent}%</span>
                 </div>
                 <div className="flex justify-between items-center p-4 px-5 bg-background-muted/30">
                   <span className="text-sm font-semibold text-foreground">Harga Jual</span>
-                  <span className="text-base font-bold text-brand">{formatRupiah(product.sell_price)}</span>
+                  <span className="text-base font-bold text-foreground">{formatRupiah(product.sell_price)}</span>
                 </div>
               </div>
             </CardContent>
@@ -158,8 +208,8 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
             </CardHeader>
             <CardContent className="p-5">
               <div className="flex items-center gap-3">
-                 <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0" style={{ backgroundColor: product.is_active ? "#dcfce7" : "#fee2e2" }}>
-                   <Box className="w-5 h-5" style={{ color: product.is_active ? "#16a34a" : "#ef4444" }} />
+                 <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0" style={{ backgroundColor: product.is_active ? "#16a34a" : "#dc2626" }}>
+                   <Box className="w-5 h-5 text-white" />
                  </div>
                  <div>
                    <p className="text-sm font-bold text-foreground">{product.is_active ? "Produk Aktif" : "Produk Nonaktif"}</p>
@@ -170,6 +220,48 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
           </Card>
         </div>
       </div>
+
+      {/* Edit Modal */}
+      <Modal open={showEdit} onClose={() => setShowEdit(false)} title="Edit Produk">
+        <div className="space-y-4">
+          <Input label="Nama Produk *" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
+          <Textarea label="Deskripsi Singkat" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
+          <Input label="Kecepatan (opsional)" placeholder="contoh: 50 Mbps" value={form.speed} onChange={(e) => setForm({ ...form, speed: e.target.value })} />
+          
+          <div className="grid grid-cols-2 gap-4">
+            <Input label="Harga Pokok (HPP) *" type="number" value={form.hpp || ""} onChange={(e) => setForm({ ...form, hpp: Number(e.target.value) })} />
+            <Input label="Margin (%) *" type="number" value={form.margin_percent || ""} onChange={(e) => setForm({ ...form, margin_percent: Number(e.target.value) })} />
+          </div>
+
+          <div className="p-3 rounded-lg border border-border bg-background-muted">
+            <p className="text-xs text-foreground-muted">Harga Jual (otomatis)</p>
+            <p className="text-lg font-bold text-foreground">{formatRupiah(form.hpp + (form.hpp * form.margin_percent) / 100)}</p>
+          </div>
+          
+          <div className="flex items-center gap-2">
+            <input type="checkbox" id="prod-active" checked={form.is_active} onChange={(e) => setForm({ ...form, is_active: e.target.checked })} className="rounded" />
+            <label htmlFor="prod-active" className="text-sm text-foreground">Aktifkan Produk</label>
+          </div>
+          
+          <div className="flex justify-end gap-3 pt-4 border-t border-border">
+            <Button variant="outline" onClick={() => setShowEdit(false)}>Batal</Button>
+            <Button variant="primary" onClick={handleEdit} disabled={saving}>
+              {saving ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null} Simpan
+            </Button>
+          </div>
+        </div>
+      </Modal>
+
+      {/* Delete Modal */}
+      <Modal open={showDelete} onClose={() => setShowDelete(false)} title="Hapus Produk" size="sm">
+        <p className="text-sm text-foreground-secondary mb-4">Apakah Anda yakin ingin menghapus produk <strong>{product.name}</strong>? Tindakan ini tidak dapat dibatalkan.</p>
+        <div className="flex justify-end gap-3">
+          <Button variant="outline" onClick={() => setShowDelete(false)}>Batal</Button>
+          <Button variant="primary" className="bg-error hover:bg-error/90" onClick={handleDelete} disabled={saving}>
+            {saving ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null} Hapus
+          </Button>
+        </div>
+      </Modal>
     </div>
   );
 }

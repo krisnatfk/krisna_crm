@@ -9,8 +9,9 @@ import { Modal } from "@/components/ui/modal";
 import { useToast } from "@/components/ui/toast";
 import { formatRupiah, calculateSellPrice } from "@/lib/utils";
 import type { Product } from "@/types";
-import { Plus, Search, Edit2, Trash2, Loader2, Download, ArrowUpDown, ChevronLeft, ChevronRight, Wifi } from "lucide-react";
+import { Plus, Search, Edit2, Trash2, Loader2, Download, ArrowUpDown, ChevronLeft, ChevronRight, Wifi, Eye } from "lucide-react";
 import { ColumnToggle, useColumnVisibility } from "@/components/ui/column-toggle";
+import { DropdownMenu, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { exportToExcel } from "@/lib/export";
 import { useRouter } from "next/navigation";
 
@@ -225,10 +226,19 @@ export default function ProductsPage() {
                       )}
                       {isVisible("actions") && (
                         <td className="px-5 py-3.5">
-                          <div className="flex items-center justify-end gap-1">
-                            <Button variant="ghost" size="icon" onClick={(e) => { e.stopPropagation(); openEdit(p); }}><Edit2 className="w-3.5 h-3.5" /></Button>
-                            <Button variant="ghost" size="icon" onClick={(e) => { e.stopPropagation(); setShowDelete(p.id); }}><Trash2 className="w-3.5 h-3.5 text-error" /></Button>
-                          </div>
+                            <div className="flex items-center justify-end">
+                              <DropdownMenu>
+                                <DropdownMenuItem onClick={() => router.push(`/products/${p.id}`)}>
+                                  <Eye className="w-3.5 h-3.5" /> View
+                                </DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => openEdit(p)}>
+                                  <Edit2 className="w-3.5 h-3.5" /> Edit
+                                </DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => setShowDelete(p.id)} destructive>
+                                  <Trash2 className="w-3.5 h-3.5" /> Delete
+                                </DropdownMenuItem>
+                              </DropdownMenu>
+                            </div>
                         </td>
                       )}
                     </tr>
@@ -252,13 +262,18 @@ export default function ProductsPage() {
                             <p className="text-xs text-foreground-muted truncate">{p.description || "—"}</p>
                           </div>
                         </div>
-                        <div className="flex items-center gap-1 shrink-0">
-                          <Button variant="ghost" size="icon" className="w-8 h-8 rounded-md" onClick={(e) => { e.stopPropagation(); openEdit(p); }}>
-                            <Edit2 className="w-3.5 h-3.5 text-foreground-muted" />
-                          </Button>
-                          <Button variant="ghost" size="icon" className="w-8 h-8 rounded-md hover:bg-error/10" onClick={(e) => { e.stopPropagation(); setShowDelete(p.id); }}>
-                            <Trash2 className="w-3.5 h-3.5 text-error" />
-                          </Button>
+                        <div className="flex items-center shrink-0">
+                          <DropdownMenu>
+                            <DropdownMenuItem onClick={() => router.push(`/products/${p.id}`)}>
+                              <Eye className="w-3.5 h-3.5" /> View
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => openEdit(p)}>
+                              <Edit2 className="w-3.5 h-3.5" /> Edit
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => setShowDelete(p.id)} destructive>
+                              <Trash2 className="w-3.5 h-3.5" /> Delete
+                            </DropdownMenuItem>
+                          </DropdownMenu>
                         </div>
                       </div>
 
@@ -360,7 +375,7 @@ export default function ProductsPage() {
           {/* Calculated sell price */}
           <div className="p-3 rounded-lg border border-border bg-background-muted">
             <p className="text-xs text-foreground-muted">Harga Jual (otomatis)</p>
-            <p className="text-lg font-bold text-brand">{formatRupiah(computedSellPrice)}</p>
+            <p className="text-lg font-bold text-foreground">{formatRupiah(computedSellPrice)}</p>
           </div>
           <div className="flex items-center gap-2">
             <input type="checkbox" id="prod-active" checked={form.is_active} onChange={(e) => setForm({ ...form, is_active: e.target.checked })} className="rounded" />

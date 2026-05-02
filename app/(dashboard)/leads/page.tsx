@@ -10,8 +10,9 @@ import { Modal } from "@/components/ui/modal";
 import { useToast } from "@/components/ui/toast";
 import { formatDate, getLeadStatusConfig, getInitials, generateAvatarColor } from "@/lib/utils";
 import type { Lead, LeadStatus } from "@/types";
-import { Plus, Search, Edit2, Trash2, Loader2, Download, ArrowUpDown, ChevronLeft, ChevronRight, MessageCircle } from "lucide-react";
+import { Plus, Search, Edit2, Trash2, Loader2, Download, ArrowUpDown, ChevronLeft, ChevronRight, MessageCircle, Eye } from "lucide-react";
 import { ColumnToggle, useColumnVisibility } from "@/components/ui/column-toggle";
+import { DropdownMenu, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { useRouter } from "next/navigation";
 import { exportToExcel } from "@/lib/export";
 
@@ -327,13 +328,18 @@ export default function LeadsPage() {
                         )}
                         {isVisible("actions") && (
                           <td className="px-5 py-3.5">
-                            <div className="flex items-center justify-end gap-1">
-                              <Button variant="ghost" size="icon" onClick={(e) => { e.stopPropagation(); openEdit(lead); }}>
-                                <Edit2 className="w-3.5 h-3.5" />
-                              </Button>
-                              <Button variant="ghost" size="icon" onClick={(e) => { e.stopPropagation(); setShowDelete(lead.id); }}>
-                                <Trash2 className="w-3.5 h-3.5 text-error" />
-                              </Button>
+                            <div className="flex items-center justify-end">
+                              <DropdownMenu>
+                                <DropdownMenuItem onClick={() => router.push(`/leads/${lead.id}`)}>
+                                  <Eye className="w-3.5 h-3.5" /> View
+                                </DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => openEdit(lead)}>
+                                  <Edit2 className="w-3.5 h-3.5" /> Edit
+                                </DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => setShowDelete(lead.id)} destructive>
+                                  <Trash2 className="w-3.5 h-3.5" /> Delete
+                                </DropdownMenuItem>
+                              </DropdownMenu>
                             </div>
                           </td>
                         )}
@@ -364,13 +370,18 @@ export default function LeadsPage() {
                               <p className="text-xs text-foreground-muted">{lead.company || "—"}</p>
                             </div>
                           </div>
-                          <div className="flex items-center gap-1">
-                            <Button variant="ghost" size="icon" className="w-8 h-8 rounded-md" onClick={(e) => { e.stopPropagation(); openEdit(lead); }}>
-                              <Edit2 className="w-3.5 h-3.5 text-foreground-muted" />
-                            </Button>
-                            <Button variant="ghost" size="icon" className="w-8 h-8 rounded-md hover:bg-error/10" onClick={(e) => { e.stopPropagation(); setShowDelete(lead.id); }}>
-                              <Trash2 className="w-3.5 h-3.5 text-error" />
-                            </Button>
+                          <div className="flex items-center">
+                            <DropdownMenu>
+                              <DropdownMenuItem onClick={() => router.push(`/leads/${lead.id}`)}>
+                                <Eye className="w-3.5 h-3.5" /> View
+                              </DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => openEdit(lead)}>
+                                <Edit2 className="w-3.5 h-3.5" /> Edit
+                              </DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => setShowDelete(lead.id)} destructive>
+                                <Trash2 className="w-3.5 h-3.5" /> Delete
+                              </DropdownMenuItem>
+                            </DropdownMenu>
                           </div>
                         </div>
 
