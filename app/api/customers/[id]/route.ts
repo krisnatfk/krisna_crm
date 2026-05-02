@@ -56,13 +56,12 @@ export async function PUT(
     return NextResponse.json({ error: "No fields to update" }, { status: 400 });
   }
 
-  const { error } = await supabase.update("customers", updateData, { id: `eq.${id}` });
-
-  if (error) {
+  try {
+    await supabase.update("customers", { id: `eq.${id}` }, updateData);
+    return NextResponse.json({ success: true });
+  } catch (e) {
     return NextResponse.json({ error: "Gagal memperbarui pelanggan" }, { status: 500 });
   }
-
-  return NextResponse.json({ success: true });
 }
 
 export async function DELETE(
@@ -74,15 +73,15 @@ export async function DELETE(
 
   const { id } = await params;
 
-  // Hapus layanan pelanggan
-  await supabase.delete("customer_services", { customer_id: `eq.${id}` });
-  
-  // Hapus pelanggan
-  const { error } = await supabase.delete("customers", { id: `eq.${id}` });
-
-  if (error) {
+  try {
+    // Hapus layanan pelanggan
+    await supabase.delete("customer_services", { customer_id: `eq.${id}` });
+    
+    // Hapus pelanggan
+    await supabase.delete("customers", { id: `eq.${id}` });
+    
+    return NextResponse.json({ success: true });
+  } catch (e) {
     return NextResponse.json({ error: "Gagal menghapus pelanggan" }, { status: 500 });
   }
-
-  return NextResponse.json({ success: true });
 }
