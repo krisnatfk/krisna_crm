@@ -1,6 +1,6 @@
 # 🌐 PT. Smart CRM — Customer Relationship Management
 
-Aplikasi CRM (Customer Relationship Management) untuk **PT. Smart**, sebuah perusahaan Internet Service Provider (ISP). Aplikasi ini dibangun untuk mendukung transformasi digital divisi sales dalam mengelola leads, produk layanan internet, deal pipeline, pelanggan aktif, dan laporan penjualan.
+Aplikasi CRM (Customer Relationship Management) untuk **PT. Smart**, sebuah perusahaan Internet Service Provider (ISP). Aplikasi ini dibangun secara khusus untuk mendukung transformasi digital divisi *sales* dalam mengelola prospek (*leads*), produk layanan internet, *deal pipeline* (penjualan multi-produk), manajemen pelanggan aktif, *activity log*, serta laporan analitik.
 
 ---
 
@@ -8,17 +8,18 @@ Aplikasi CRM (Customer Relationship Management) untuk **PT. Smart**, sebuah peru
 
 | # | Fitur | Deskripsi |
 |---|-------|-----------|
-| 1 | **Login & Autentikasi** | JWT-based session dengan cookie httpOnly |
-| 2 | **Dashboard** | Ringkasan statistik CRM (leads, pelanggan, deals, revenue) |
-| 3 | **Leads Management** | CRUD calon pelanggan dengan filter status & pencarian |
-| 4 | **Master Produk** | CRUD paket internet (HPP, margin, harga jual otomatis) |
-| 5 | **Projects / Deal Pipeline** | Konversi lead → deal, multi-produk, negosiasi harga, approval manager |
-| 6 | **Pelanggan Aktif** | Daftar pelanggan berlangganan dengan layanan aktif |
-| 7 | **Laporan** | Reporting dengan filter periode, chart, dan export Excel |
-| 8 | **Role-Based Access** | Sales hanya melihat data sendiri, Manager melihat semua |
-| 9 | **Activity Log** | Audit trail — riwayat semua aksi CRUD, approval, dan export |
-| 10 | **WhatsApp Integration** | Tombol click-to-chat WA langsung dari halaman leads & pelanggan |
-| 11 | **PWA Support** | Installable sebagai native app di smartphone (Progressive Web App) |
+| 1 | **Login & Autentikasi** | JWT-based session dengan *cookie* `httpOnly` |
+| 2 | **Dashboard Analytics** | Ringkasan statistik CRM (leads, pelanggan, deals, revenue) |
+| 3 | **Leads Management** | CRUD calon pelanggan dengan *filter* status & pencarian |
+| 4 | **Master Produk** | CRUD paket internet (HPP, margin, perhitungan harga jual otomatis) |
+| 5 | **Projects / Deal Pipeline** | Konversi lead → deal, **multi-produk per transaksi**, negosiasi harga, dan *approval manager* |
+| 6 | **Pelanggan Aktif** | Daftar pelanggan berlangganan beserta riwayat layanan aktif |
+| 7 | **Laporan (Reporting)** | Laporan penjualan dengan *filter* periode, visualisasi grafik, dan *export* Excel |
+| 8 | **Activity Log & Notifikasi** | Riwayat audit (*audit trail*) otomatis dengan notifikasi interaktif (*Mark All as Read*) |
+| 9 | **Pengaturan Profil** | Fitur mengubah nama, *password*, dan **unggah foto profil** (*Base64 uploader*) |
+| 10 | **WhatsApp Integration** | Tombol *click-to-chat* dengan logo resmi WA langsung dari halaman Leads & Pelanggan |
+| 11 | **Role-Based Access** | *Sales* hanya melihat datanya sendiri, *Manager* memiliki akses melihat & menyetujui (Approve) semua data |
+| 12 | **PWA Support** | Dapat diinstal sebagai *native app* di *smartphone* (*Progressive Web App*) |
 
 ---
 
@@ -26,8 +27,8 @@ Aplikasi CRM (Customer Relationship Management) untuk **PT. Smart**, sebuah peru
 
 - **Framework**: Next.js 16 (App Router)
 - **Language**: TypeScript 5
-- **UI**: React 19 + Tailwind CSS v4
-- **Database**: Supabase PostgreSQL (REST API)
+- **UI**: React 19 + Tailwind CSS v4 + Lucide Icons
+- **Database**: Supabase PostgreSQL (REST API custom client)
 - **Auth**: JWT (jose) + bcryptjs + cookie session
 - **Charts**: Recharts
 - **Excel Export**: xlsx (SheetJS)
@@ -35,67 +36,54 @@ Aplikasi CRM (Customer Relationship Management) untuk **PT. Smart**, sebuah peru
 
 ---
 
-## 📁 Struktur Project
+## 📁 Struktur Project & Sidebar Navigasi
+
+Sistem navigasi dikelompokkan menjadi 4 kategori utama (*Sidebar*):
+1. **OVERVIEW**: Dashboard statistik.
+2. **SALES**: Manajemen *Leads*, Produk, dan *Projects*.
+3. **MANAGEMENT**: Database Pelanggan Aktif dan Laporan Penjualan.
+4. **SYSTEM**: Riwayat *Activity Log* dan Pengaturan Akun.
 
 ```
 krisna_crm/
 ├── app/
 │   ├── (dashboard)/          # Protected dashboard routes
-│   │   ├── dashboard/        # Halaman dashboard
-│   │   ├── leads/            # Halaman leads
-│   │   ├── products/         # Halaman master produk
-│   │   ├── projects/         # Halaman deal pipeline
-│   │   ├── customers/        # Halaman pelanggan aktif
-│   │   ├── reporting/        # Halaman laporan
-│   │   ├── activity-log/     # Halaman activity log (audit trail)
+│   │   ├── dashboard/        # Halaman dashboard (OVERVIEW)
+│   │   ├── leads/            # Halaman leads (SALES)
+│   │   ├── products/         # Halaman master produk (SALES)
+│   │   ├── projects/         # Halaman deal pipeline (SALES)
+│   │   ├── customers/        # Halaman pelanggan aktif (MANAGEMENT)
+│   │   ├── reporting/        # Halaman laporan (MANAGEMENT)
+│   │   ├── activity-log/     # Halaman activity log (SYSTEM)
+│   │   ├── settings/         # Pengaturan Profil & Keamanan (SYSTEM)
 │   │   └── layout.tsx        # Dashboard layout wrapper
 │   ├── api/                  # API Route Handlers
-│   │   ├── auth/             # Login, logout, session check
-│   │   ├── dashboard/        # Dashboard stats
-│   │   ├── leads/            # Leads CRUD
-│   │   ├── products/         # Products CRUD
-│   │   ├── projects/         # Projects CRUD + approval
-│   │   ├── customers/        # Customers list
-│   │   ├── reporting/        # Report data + Excel export
-│   │   └── activity-logs/    # Activity log API
-│   ├── login/                # Halaman login (public)
-│   ├── globals.css           # Global styles + design tokens
-│   ├── layout.tsx            # Root layout
-│   └── page.tsx              # Root redirect → /login
+│   │   ├── auth/             # Login, logout, session check, me
+│   │   ├── users/profile/    # API endpoint update nama, password & foto
+│   │   └── ...               # API endpoints lainnya
+│   └── globals.css           # Global styles + design tokens
 ├── components/
-│   ├── layout/               # Sidebar, Header, DashboardLayout
+│   ├── layout/               # Sidebar terstruktur, Header (Notifikasi UI)
 │   ├── providers/            # ThemeProvider, AuthProvider
-│   └── ui/                   # Button, Card, Input, Select, Modal, Toast, etc.
+│   └── ui/                   # Reusable UI components
 ├── lib/
-│   ├── auth.ts               # JWT session + password helpers
-│   ├── supabase.ts           # Supabase REST API client
-│   ├── activity-logger.ts    # Activity logging helper
-│   ├── data.ts               # Navigation config
-│   └── utils.ts              # Format helpers (Rupiah, date, status)
-├── types/
-│   └── index.ts              # TypeScript type definitions
+│   ├── auth.ts               # JWT session management
+│   ├── supabase.ts           # Supabase REST API wrapper
+│   └── data.ts               # Navigation state config
 ├── database/
-│   ├── schema.sql            # Database schema + seed data
-│   └── activity_logs.sql     # Activity logs table schema
-├── public/
-│   ├── manifest.json         # PWA manifest
-│   ├── logo.png              # Company logo
-│   └── icons/                # PWA icons
-├── middleware.ts              # Route protection middleware
-├── Dockerfile                 # Multi-stage Docker build
-├── docker-compose.yml         # Docker Compose config
-└── .env.local                 # Environment variables
+│   ├── schema.sql            # Database schema + Alter tables
+│   └── seed_dummy_data.sql   # Data dummy dengan skenario Multi-produk
+└── docker-compose.yml        # Konfigurasi container
 ```
 
 ---
 
-## 🚀 Cara Menjalankan
+## 🚀 Cara Menjalankan Aplikasi
 
 ### Prerequisites
 
 - **Node.js** >= 18.x
-- **npm** >= 9.x
-- Akun **Supabase** (sudah di-setup)
+- Akun **Supabase** (dengan project yang sudah di-setup)
 
 ### 1. Clone & Install
 
@@ -105,29 +93,23 @@ cd krisna_crm
 npm install
 ```
 
-### 2. Setup Environment Variables
+### 2. Setup Database Supabase
 
-File `.env.local` sudah tersedia, berisi:
+Buka **SQL Editor** pada *dashboard* Supabase Anda dan jalankan *script* secara berurutan:
+1. Copy-paste isi `database/schema.sql` (Termasuk perintah *ALTER TABLE* untuk `avatar_url`).
+2. Copy-paste isi `database/activity_logs.sql`.
+3. Copy-paste isi `database/seed_dummy_data.sql` (Terdapat skenario transaksi riil dengan diskon manajer dan multi-produk).
+4. *(Optional)* Jalankan `NOTIFY pgrst, 'reload schema';` jika API Cache belum me-*refresh* kolom profil gambar.
+
+### 3. Setup Environment Variables
+
+Buat file `.env.local` pada *root project*:
 
 ```env
-SUPABASE_URL=https://bgharuggetsznnlrytyw.supabase.co
-SUPABASE_ANON_KEY=<your-anon-key>
-SESSION_SECRET=<your-secret>
+SUPABASE_URL=https://<id-project-anda>.supabase.co
+SUPABASE_ANON_KEY=<anon-key-anda>
+SESSION_SECRET=<random-string-rahasia-minimal-32-karakter>
 ```
-
-### 3. Setup Database
-
-Buka **Supabase SQL Editor** dan jalankan isi file `database/schema.sql` untuk membuat tabel dan seed data.
-
-> ⚠️ **Penting**: Pastikan tabel sudah dibuat sebelum menjalankan aplikasi.
-
-Setelah tabel dibuat, Anda perlu generate hash password yang benar untuk seed users. Jalankan:
-
-```bash
-node -e "const bcrypt = require('bcryptjs'); bcrypt.hash('password123', 10).then(h => console.log(h))"
-```
-
-Lalu update kolom `password_hash` pada tabel `users` dengan hash yang dihasilkan.
 
 ### 4. Jalankan Development Server
 
@@ -137,7 +119,7 @@ npm run dev
 
 Buka [http://localhost:3000](http://localhost:3000) di browser.
 
-### 5. Login
+### 5. Login Dummy Akun
 
 | Role | Email | Password |
 |------|-------|----------|
@@ -148,75 +130,45 @@ Buka [http://localhost:3000](http://localhost:3000) di browser.
 
 ## 🐳 Docker Deployment
 
-### Build & Run
+Aplikasi sudah memiliki *Dockerfile* dan *docker-compose*.
+Untuk menjalankan melalui Docker:
 
 ```bash
 docker-compose up --build -d
 ```
 
-Aplikasi akan berjalan di [http://localhost:3000](http://localhost:3000).
-
-### Environment Variables
-
-Pastikan file `.env.local` atau set environment variables di `docker-compose.yml`:
-
-```yaml
-environment:
-  - SUPABASE_URL=https://bgharuggetsznnlrytyw.supabase.co
-  - SUPABASE_ANON_KEY=<your-key>
-  - SESSION_SECRET=<your-secret>
-```
+Aplikasi akan di-*serve* secara terisolasi pada `localhost:3000`. Pastikan memasukkan ENV variable yang sesuai pada konfigurasi kontainer.
 
 ---
 
-## 👥 Role & Akses
+## 📊 Alur Bisnis Deal Pipeline
 
-| Fitur | Sales | Manager |
-|-------|-------|---------|
-| Melihat data sendiri | ✅ | ✅ |
-| Melihat data sales lain | ❌ | ✅ |
-| CRUD Leads | ✅ (milik sendiri) | ✅ (semua) |
-| CRUD Produk | ✅ | ✅ |
-| Buat Project/Deal | ✅ | ✅ |
-| Approve/Reject Deal | ❌ | ✅ |
-| Lihat Pelanggan | ✅ (milik sendiri) | ✅ (semua) |
-| Laporan | ✅ (data sendiri) | ✅ (semua data) |
-| Export Excel | ✅ | ✅ |
+Sistem diatur agar otomatis menangani persetujuan diskon jika *Sales* memasukkan harga negosiasi di bawah standar:
 
----
-
-## 📊 Alur Bisnis
-
-```
+```text
 Lead (Calon Customer)
   ↓ [Sales membuat project/deal]
-Project / Deal Pipeline
-  ↓ [Jika harga < harga jual → perlu approval]
-  → Waiting Approval
-    ↓ [Manager approve]
-    → Approved → Customer + Services dibuat otomatis
-    ↓ [Manager reject]
-    → Rejected (dengan alasan)
+Project Pipeline (Multi-produk)
+  ↓ [Jika Harga Negosiasi < Harga Normal → Butuh Approval Manager]
+  → Status: Waiting Approval
+    ↓ [Manager Login & Review]
+    → [Approve] → Status menjadi "Approved", lalu otomatis masuk ke tabel Pelanggan!
+    → [Reject]  → Status "Rejected" (disertai keterangan alasan dari Manager)
 ```
 
 ---
 
-## 📝 Catatan Teknis
+## 📝 Catatan Teknis (Highlight Mini Project)
 
-1. **Autentikasi**: Menggunakan JWT stateless session yang disimpan di cookie httpOnly.
-2. **Database**: Menggunakan Supabase PostgreSQL via REST API (bukan client library).
-3. **Harga Jual**: Dihitung otomatis dari HPP + (HPP × Margin%).
-4. **Approval**: Jika harga negosiasi < harga jual, project otomatis berstatus "waiting_approval".
-5. **Auto-conversion**: Saat project di-approve, sistem otomatis membuat customer dan customer services.
-6. **Role filtering**: Semua query API di-filter berdasarkan `sales_id` untuk role sales.
-7. **Activity Log**: Setiap aksi CRUD, approval, dan rejection tercatat otomatis sebagai audit trail.
-8. **WhatsApp**: Nomor kontak otomatis diformat ke format internasional (62xxx) untuk integrasi WA.
-9. **PWA**: Aplikasi dapat di-install ke home screen perangkat mobile sebagai native app.
+1. **Avatar & Image Uploader**: Penyimpanan foto profil dikonversi ke *Base64* (limit maksimal 500KB) untuk memastikan *database* tetap ringan dan menghindari kerumitan konfigurasi Supabase Storage.
+2. **Notification Bell**: Dropdown notifikasi bersifat dinamis berdasarkan data `Activity Log` (CRUD), dilengkapi fitur persisten penanda *"Mark All as Read"* yang menggunakan *localStorage*.
+3. **Responsive UI**: Desain berbasis *card* pada mode *mobile* (tabel responsif) agar sangat nyaman diakses oleh *Sales* saat berada di lapangan.
+4. **WhatsApp C2C**: *Hyperlink* pintar `wa.me` langsung memformat nomor telepon (misal dari `0812...` menjadi `62812...`) tanpa menghapus spasi/karakter khusus lainnya.
 
 ---
 
 ## 📄 Lisensi
 
-Mini Project untuk keperluan pembelajaran — PT. Smart CRM.
+Proyek dikembangkan secara independen sebagai tugas seleksi *Fullstack Developer* untuk PT. Smart.
 
 **Happy Coding! 🚀**

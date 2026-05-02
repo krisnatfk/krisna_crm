@@ -202,15 +202,15 @@ export default function LoginPage() {
               Demo Accounts
             </h3>
             <div className="space-y-3">
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-foreground-muted font-medium">Sales</span>
-                <code className="text-xs font-mono bg-background-card px-2 py-1 rounded border border-border text-brand font-medium">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-3 text-sm">
+                <span className="text-foreground-muted font-medium min-w-max">Sales</span>
+                <code className="text-[11px] sm:text-xs font-mono bg-background-card px-2.5 py-1.5 rounded border border-border text-brand font-medium break-all text-left sm:text-right">
                   sales@smart.co.id / password123
                 </code>
               </div>
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-foreground-muted font-medium">Manager</span>
-                <code className="text-xs font-mono bg-background-card px-2 py-1 rounded border border-border text-brand font-medium">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-3 text-sm">
+                <span className="text-foreground-muted font-medium min-w-max">Manager</span>
+                <code className="text-[11px] sm:text-xs font-mono bg-background-card px-2.5 py-1.5 rounded border border-border text-brand font-medium break-all text-left sm:text-right">
                   manager@smart.co.id / password123
                 </code>
               </div>

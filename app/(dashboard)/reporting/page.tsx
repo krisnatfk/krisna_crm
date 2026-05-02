@@ -155,7 +155,7 @@ export default function ReportingPage() {
                   <p className="text-sm text-foreground-muted text-center py-8">Belum ada data</p>
                 ) : (
                   <div className="h-[280px]">
-                    <ResponsiveContainer width="100%" height="100%">
+                    <ResponsiveContainer width="100%" height="100%" minWidth={1} minHeight={1}>
                       <BarChart data={data.revenueByMonth}>
                         <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
                         <XAxis dataKey="month" tick={{ fontSize: 11, fill: "var(--foreground-muted)" }} />
@@ -180,7 +180,7 @@ export default function ReportingPage() {
                   <p className="text-sm text-foreground-muted text-center py-8">Belum ada data</p>
                 ) : (
                   <div className="h-[200px]">
-                    <ResponsiveContainer width="100%" height="100%">
+                    <ResponsiveContainer width="100%" height="100%" minWidth={1} minHeight={1}>
                       <PieChart>
                         <Pie data={data.dealsByStatus.filter((d) => d.count > 0)} dataKey="count" nameKey="status" cx="50%" cy="50%" innerRadius={50} outerRadius={80} paddingAngle={2}>
                           {data.dealsByStatus.filter((d) => d.count > 0).map((_, i) => (

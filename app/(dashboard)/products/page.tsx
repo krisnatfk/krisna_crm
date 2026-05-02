@@ -178,8 +178,8 @@ export default function ProductsPage() {
                       {isVisible("product") && (
                         <td className="px-5 py-3.5">
                           <div className="flex items-center gap-3">
-                            <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: "#3b82f6" }}>
-                              <Wifi className="w-4 h-4" style={{ color: "#ffffff" }} />
+                            <div className="w-9 h-9 rounded-lg bg-background-muted border border-border flex items-center justify-center shrink-0">
+                              <Wifi className="w-4 h-4 text-foreground-secondary" />
                             </div>
                             <div>
                               <p className="font-medium text-foreground">{p.name}</p>
@@ -190,7 +190,7 @@ export default function ProductsPage() {
                       )}
                       {isVisible("speed") && (
                         <td className="px-5 py-3.5 hidden md:table-cell">
-                          <span className="px-2.5 py-1 text-[11px] font-bold tracking-wide rounded-md" style={{ backgroundColor: "#8b5cf6", color: "#ffffff" }}>
+                          <span className="px-2.5 py-1 text-[11px] font-medium tracking-wide rounded-md bg-background-card border border-border text-foreground">
                             {p.speed || "—"}
                           </span>
                         </td>
@@ -201,9 +201,7 @@ export default function ProductsPage() {
                       {isVisible("margin") && (
                         <td className="px-5 py-3.5 text-right font-medium text-foreground">{p.margin_percent}%</td>
                       )}
-                      {isVisible("sell_price") && (
-                        <td className="px-5 py-3.5 text-right font-bold text-brand">{formatRupiah(Number(p.sell_price))}</td>
-                      )}
+                        <td className="px-5 py-3.5 text-right font-semibold text-foreground">{formatRupiah(Number(p.sell_price))}</td>
                       {isVisible("status") && (
                         <td className="px-5 py-3.5 text-center hidden lg:table-cell">
                           <span className="px-2.5 py-1 text-[11px] font-bold tracking-wide rounded-md" style={{ backgroundColor: p.is_active ? "#16a34a" : "#dc2626", color: "#ffffff" }}>
@@ -232,8 +230,8 @@ export default function ProductsPage() {
                     <CardContent className="p-4">
                       <div className="flex justify-between items-start mb-4">
                         <div className="flex gap-3 min-w-0 pr-2">
-                          <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: "#3b82f6" }}>
-                            <Wifi className="w-5 h-5 text-white" />
+                          <div className="w-10 h-10 rounded-lg bg-background-muted border border-border flex items-center justify-center shrink-0">
+                            <Wifi className="w-5 h-5 text-foreground-secondary" />
                           </div>
                           <div className="min-w-0">
                             <h3 className="font-semibold text-sm text-foreground truncate">{p.name}</h3>
@@ -253,7 +251,7 @@ export default function ProductsPage() {
                       <div className="grid grid-cols-2 gap-y-4 pt-4 border-t border-border-light">
                         <div>
                           <p className="text-[11px] text-foreground-muted mb-1.5 capitalize">Speed</p>
-                          <span className="px-2.5 py-1 text-[11px] font-bold tracking-wide rounded-md" style={{ backgroundColor: "#8b5cf6", color: "#ffffff" }}>
+                          <span className="px-2.5 py-1 text-[11px] font-medium tracking-wide rounded-md bg-background-card border border-border text-foreground">
                             {p.speed || "—"}
                           </span>
                         </div>
@@ -269,7 +267,7 @@ export default function ProductsPage() {
                         </div>
                         <div>
                           <p className="text-[11px] text-foreground-muted mb-1 capitalize">Harga Jual</p>
-                          <p className="text-sm font-bold text-brand">{formatRupiah(Number(p.sell_price))}</p>
+                          <p className="text-sm font-semibold text-foreground">{formatRupiah(Number(p.sell_price))}</p>
                         </div>
                       </div>
                     </CardContent>

@@ -176,7 +176,7 @@ export default function SettingsPage() {
                   <p className="text-sm text-foreground-muted flex items-center gap-1.5 mt-1">
                     <Mail className="w-4 h-4" /> {user.email}
                   </p>
-                  <span className="inline-block mt-3 px-3 py-1 text-xs font-bold tracking-wide rounded-md capitalize bg-brand/10 text-brand">
+                  <span className="inline-block mt-3 px-3 py-1 text-xs font-semibold tracking-wide rounded-md capitalize bg-background-muted text-foreground-secondary border border-border">
                     Role: {user.role}
                   </span>
                 </div>

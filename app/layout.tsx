@@ -1,8 +1,9 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { AuthProvider } from "@/components/providers/auth-provider";
 import { ToastProvider } from "@/components/ui/toast";
+import { RechartsSuppressor } from "@/components/providers/recharts-suppressor";
 import "./globals.css";
 
 const inter = Inter({
@@ -16,17 +17,18 @@ export const metadata: Metadata = {
   description:
     "Aplikasi CRM untuk PT. Smart ISP — Kelola leads, produk, deal pipeline, pelanggan, dan laporan penjualan.",
   manifest: "/manifest.json",
-  themeColor: "#16a34a",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
     title: "Smart CRM",
   },
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 1,
-  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#16a34a",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
 };
 
 export default function RootLayout({
@@ -42,7 +44,10 @@ export default function RootLayout({
       <body className="min-h-full font-sans">
         <ThemeProvider>
           <AuthProvider>
-            <ToastProvider>{children}</ToastProvider>
+            <ToastProvider>
+              {children}
+              <RechartsSuppressor />
+            </ToastProvider>
           </AuthProvider>
         </ThemeProvider>
       </body>

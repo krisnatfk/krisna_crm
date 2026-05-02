@@ -278,13 +278,7 @@ export function Header({ collapsed, onMobileMenuToggle }: HeaderProps) {
               <div className="px-4 py-3 border-b border-border">
                 <p className="text-sm font-semibold text-foreground">{user?.name}</p>
                 <p className="text-xs text-foreground-muted mt-0.5">{user?.email}</p>
-                <span
-                  className="inline-block mt-1.5 px-2.5 py-1 text-[11px] font-bold tracking-wide rounded-md capitalize"
-                  style={{
-                    backgroundColor: user?.role === "manager" ? "var(--purple-bg)" : "var(--info-bg)",
-                    color: user?.role === "manager" ? "#9333ea" : "#2563eb",
-                  }}
-                >
+                <span className="inline-block mt-1.5 px-2.5 py-1 text-[11px] font-semibold tracking-wide rounded-md capitalize bg-background-muted text-foreground-secondary border border-border">
                   {user?.role}
                 </span>
               </div>
