@@ -72,6 +72,8 @@ export async function DELETE(
     return NextResponse.json({ error: "Produk tidak ditemukan" }, { status: 404 });
   }
 
+  const productData = product as Record<string, unknown>;
+
   await supabase.delete("products", { id: `eq.${id}` });
   await logActivity({
     userId: user.userId,
@@ -79,8 +81,8 @@ export async function DELETE(
     action: "deleted",
     entityType: "product",
     entityId: id,
-    entityName: (product.name as string) || "",
-    details: `Produk dihapus: ${product.name}`,
+    entityName: (productData.name as string) || "",
+    details: `Produk dihapus: ${productData.name}`,
   });
   return NextResponse.json({ success: true });
 }

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/components/providers/auth-provider";
-import { formatRupiah, formatDate, getLeadStatusConfig, getProjectStatusConfig, getInitials, generateAvatarColor } from "@/lib/utils";
+import { formatRupiah, formatDate, formatDateTime, getLeadStatusConfig, getProjectStatusConfig, getInitials, generateAvatarColor } from "@/lib/utils";
 import { Users, UserCheck, FolderKanban, TrendingUp, ArrowUpRight, ArrowDownRight, Loader2, Plus, Edit2, Trash2, Check, X, FileDown, Clock } from "lucide-react";
 import { AreaChart, Area, ResponsiveContainer } from "recharts";
 
@@ -311,8 +311,14 @@ export default function DashboardPage() {
                                 <span className="text-brand font-medium"> {activity.entity_name}</span>
                               )}
                             </p>
+                            {activity.details && (
+                              <p className="text-[11px] text-foreground-muted mt-0.5 truncate max-w-[280px] sm:max-w-md">{activity.details}</p>
+                            )}
                           </div>
-                          <span className="text-[11px] text-foreground-muted whitespace-nowrap shrink-0">{timeAgo}</span>
+                          <div className="flex flex-col items-end shrink-0">
+                            <span className="text-[11px] text-foreground-muted whitespace-nowrap">{timeAgo}</span>
+                            <span className="text-[9px] text-foreground-muted/70 whitespace-nowrap mt-0.5">{formatDateTime(activity.created_at)}</span>
+                          </div>
                         </div>
                       </div>
                     </div>

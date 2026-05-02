@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Select } from "@/components/ui/select";
-import { formatDate } from "@/lib/utils";
+import { formatDate, formatDateTime } from "@/lib/utils";
 import {
   Loader2, Plus, Edit2, Trash2, Check, X, FileDown,
   Clock, ChevronLeft, ChevronRight, History,
@@ -130,9 +130,12 @@ export default function ActivityLogPage() {
                       return (
                         <tr key={log.id} className="border-b border-border-light hover:bg-background-hover/50 transition-colors">
                           <td className="px-5 py-3.5">
-                            <div className="flex items-center gap-2">
-                              <Clock className="w-3.5 h-3.5 text-foreground-muted" />
-                              <span className="text-xs text-foreground-muted">{formatDate(log.created_at)}</span>
+                            <div className="flex flex-col gap-0.5">
+                              <div className="flex items-center gap-1.5">
+                                <Clock className="w-3.5 h-3.5 text-foreground-muted" />
+                                <span className="text-xs font-medium text-foreground">{formatDate(log.created_at)}</span>
+                              </div>
+                              <span className="text-[11px] text-foreground-muted ml-5">{new Date(log.created_at).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}</span>
                             </div>
                           </td>
                           <td className="px-5 py-3.5">
@@ -190,7 +193,10 @@ export default function ActivityLogPage() {
                             <span className="text-foreground-muted">{config.label.toLowerCase()}</span>{" "}
                             <span className="font-medium">{entityLabels[log.entity_type] || log.entity_type}</span>
                           </p>
-                          <span className="text-[10px] text-foreground-muted whitespace-nowrap shrink-0">{timeAgo}</span>
+                          <div className="flex flex-col items-end shrink-0">
+                            <span className="text-[10px] text-foreground-muted whitespace-nowrap">{timeAgo}</span>
+                            <span className="text-[9px] text-foreground-muted/70 whitespace-nowrap mt-0.5">{formatDateTime(log.created_at)}</span>
+                          </div>
                         </div>
                         {log.entity_name && (
                           <p className="text-xs text-brand font-medium mt-0.5 truncate">{log.entity_name}</p>
