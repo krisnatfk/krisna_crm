@@ -97,9 +97,9 @@ export default function ProductsPage() {
   const handleExport = () => {
     const dataToExport = filteredProducts.map((p, i) => ({
       No: i + 1,
-      Produk: p.product_name,
+      Produk: p.name,
       Kecepatan: p.speed,
-      HPP: Number(p.base_price),
+      HPP: Number(p.hpp),
       Margin: p.margin_percent + "%",
       "Harga Jual": Number(p.sell_price),
       Deskripsi: p.description || "-"
