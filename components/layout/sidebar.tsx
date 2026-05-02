@@ -202,8 +202,10 @@ export function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose }: Side
         {!collapsed && (
           <div className="p-3 border-t shrink-0" style={{ borderColor: "oklab(0.87 -0.003 -0.004 / 0.15)" }}>
             <div className="flex items-center gap-3 px-3 py-2.5 rounded-lg">
-              <div className="w-8 h-8 rounded-full bg-brand flex items-center justify-center text-xs font-bold text-white shrink-0">
-                {user ? getInitials(user.name) : ".."}
+              <div className="w-8 h-8 rounded-full bg-brand flex items-center justify-center text-xs font-bold text-white shrink-0 overflow-hidden">
+                {user?.avatar_url ? (
+                  <img src={user.avatar_url} alt="Avatar" className="w-full h-full object-cover" />
+                ) : user ? getInitials(user.name) : ".."}
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-semibold text-white truncate">
