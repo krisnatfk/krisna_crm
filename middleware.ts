@@ -9,12 +9,12 @@ const publicPaths = ["/login", "/api/auth/login"];
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Allow public paths
+  // Bolehkan akses public routes
   if (publicPaths.some((path) => pathname.startsWith(path))) {
     return NextResponse.next();
   }
 
-  // Allow static files and Next.js internals
+  // Abaikan file statis & internal Next.js
   if (
     pathname.startsWith("/_next") ||
     pathname.startsWith("/favicon") ||
@@ -23,7 +23,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Check for session cookie
+  // Cek cookie session
   const session = request.cookies.get("session")?.value;
 
   if (!session) {
@@ -34,7 +34,7 @@ export async function middleware(request: NextRequest) {
     await jwtVerify(session, encodedKey, { algorithms: ["HS256"] });
     return NextResponse.next();
   } catch {
-    // Invalid or expired session
+    // Jika session tidak valid/expired
     const response = NextResponse.redirect(new URL("/login", request.url));
     response.cookies.delete("session");
     return response;

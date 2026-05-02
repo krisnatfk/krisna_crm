@@ -12,15 +12,14 @@ export async function PUT(request: NextRequest) {
     const body = await request.json();
     const { name, email, avatar_url, currentPassword, newPassword } = body;
 
-    // Handle Profile Update (Name, Email, Avatar)
+    // Proses update Profil (Nama, Email, Avatar)
     if (name || email || avatar_url !== undefined) {
       const updates: any = { updated_at: new Date().toISOString() };
       
       if (name) updates.name = name;
       if (avatar_url !== undefined) updates.avatar_url = avatar_url;
       
-      // If email is changing, we should check for uniqueness, but Supabase handles unique constraints.
-      // We will just try to update it and catch the error if it exists.
+      // Abaikan dulu validasi manual, biarkan Supabase yg tangani unique constraint emailnya
       if (email && email !== user.email) {
         updates.email = email;
       }
@@ -34,7 +33,7 @@ export async function PUT(request: NextRequest) {
         throw error;
       }
 
-      // Update session with new name/email
+      // Update data session dengan nama/email baru
       await createSession({
         id: user.userId,
         email: email || user.email,
@@ -45,7 +44,7 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ success: true, message: "Profile updated" });
     }
 
-    // Handle Password Update
+    // Proses update Password
     if (currentPassword && newPassword) {
       // 1. Get current password hash
       const dbUser = await supabase.selectOne<{ password_hash: string }>("users", {

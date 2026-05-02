@@ -42,7 +42,7 @@ export function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose }: Side
 
   return (
     <>
-      {/* Mobile Backdrop Overlay */}
+      {/* Latar Belakang Overlay untuk Mobile */}
       {mobileOpen && (
         <div
           className="fixed inset-0 z-30 bg-black/50 md:hidden transition-opacity"
@@ -76,7 +76,7 @@ export function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose }: Side
           )}
         </div>
 
-        {/* Toggle Button - hidden on mobile */}
+        {/* Tombol Toggle - Sembunyi di mobile */}
         <button
           onClick={onToggle}
           className={cn(
@@ -94,14 +94,14 @@ export function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose }: Side
           />
         </button>
 
-        {/* Navigation */}
+        {/* Navigasi Utama */}
         <nav className="flex-1 overflow-y-auto sidebar-scroll py-3 px-3">
           {navSections.map((section) => {
             const isOpen = openSections[section.title] ?? true;
 
             return (
               <div key={section.title} className="mb-1">
-                {/* Section Header - Collapsible */}
+                {/* Header Grup Menu */}
                 {!collapsed && (
                   <button
                     onClick={() => toggleSection(section.title)}
@@ -123,7 +123,7 @@ export function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose }: Side
                   </button>
                 )}
 
-                {/* Section Items */}
+                {/* Daftar Menu */}
                 <div
                   className={cn(
                     "overflow-hidden transition-all duration-300 ease-in-out",
@@ -198,7 +198,7 @@ export function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose }: Side
           })}
         </nav>
 
-        {/* User Profile */}
+        {/* Profil Pengguna Bawah */}
         {!collapsed && (
           <div className="p-3 border-t shrink-0" style={{ borderColor: "oklab(0.87 -0.003 -0.004 / 0.15)" }}>
             <div className="flex items-center gap-3 px-3 py-2.5 rounded-lg">

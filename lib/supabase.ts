@@ -1,6 +1,6 @@
-// Supabase REST API client helper
-// Uses service_role key because all calls are server-side (API routes)
-// This bypasses RLS — auth is handled by our JWT middleware instead
+// Wrapper client untuk Supabase REST API
+// Menggunakan service_role karena dipanggil dari sisi server (API routes)
+// Bypass RLS karena auth kita tangani sendiri pakai JWT middleware
 const SUPABASE_URL = process.env.SUPABASE_URL!;
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY!;
 

@@ -42,9 +42,9 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen w-full flex bg-background">
-      {/* Left Panel - Hero/Branding */}
+      {/* Panel Kiri - Branding & Hero */}
       <div className="hidden lg:flex flex-1 flex-col justify-between p-12 relative overflow-hidden bg-brand">
-        {/* Abstract Background Shapes */}
+        {/* Latar Belakang Abstrak */}
         <div className="absolute inset-0 z-0">
           <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full bg-white/10 blur-3xl" />
           <div className="absolute bottom-[-20%] right-[-10%] w-[600px] h-[600px] rounded-full bg-black/10 blur-3xl" />
@@ -63,7 +63,7 @@ export default function LoginPage() {
           </div>
         </div>
 
-        {/* Hero Text */}
+        {/* Teks Utama */}
         <div className="relative z-10 max-w-lg mt-12">
           <h2 className="text-5xl font-extrabold text-white leading-tight">
             Elevate Your <br />
@@ -101,10 +101,10 @@ export default function LoginPage() {
         </div>
       </div>
 
-      {/* Right Panel - Form */}
+      {/* Panel Kanan - Form Login */}
       <div className="w-full lg:w-[560px] flex flex-col justify-center px-8 sm:px-16 relative">
         <div className="w-full max-w-sm mx-auto">
-          {/* Mobile Logo */}
+          {/* Logo versi Mobile */}
           <div className="lg:hidden flex items-center gap-3 mb-10">
             <div className="w-14 h-14 rounded-xl bg-white border border-border flex items-center justify-center shadow-sm p-2.5">
               <img src="/logo.png" alt="PT. Smart Logo" className="w-full h-full object-contain" />
@@ -152,7 +152,7 @@ export default function LoginPage() {
                 <label htmlFor="password" className="block text-sm font-medium text-foreground-secondary">
                   Password
                 </label>
-                <a href="#" className="text-xs font-medium text-brand hover:text-brand-dark transition-colors">
+                <a href="#" onClick={(e) => { e.preventDefault(); setError("Fitur reset password dinonaktifkan pada versi demo. Silakan hubungi Admin IT."); }} className="text-xs font-medium text-brand hover:text-brand-dark transition-colors">
                   Forgot password?
                 </a>
               </div>
@@ -195,22 +195,22 @@ export default function LoginPage() {
             </button>
           </form>
 
-          {/* Demo Credentials */}
+          {/* Info Akun Demo */}
           <div className="mt-10 p-5 rounded-xl border border-border-light bg-background-hover/50">
             <h3 className="text-xs font-semibold text-foreground-secondary uppercase tracking-wider mb-3 flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-brand"></span>
               Demo Accounts
             </h3>
             <div className="space-y-3">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-3 text-sm">
-                <span className="text-foreground-muted font-medium min-w-max">Sales</span>
-                <code className="text-[11px] sm:text-xs font-mono bg-background-card px-2.5 py-1.5 rounded border border-border text-brand font-medium break-all text-left sm:text-right">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-4 text-sm">
+                <span className="text-foreground-muted font-medium w-20 shrink-0">Sales</span>
+                <code className="flex-1 text-[11px] sm:text-xs font-mono bg-background-card px-3 py-1.5 rounded border border-border text-brand font-medium break-all text-left">
                   sales@smart.co.id / password123
                 </code>
               </div>
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-3 text-sm">
-                <span className="text-foreground-muted font-medium min-w-max">Manager</span>
-                <code className="text-[11px] sm:text-xs font-mono bg-background-card px-2.5 py-1.5 rounded border border-border text-brand font-medium break-all text-left sm:text-right">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-4 text-sm">
+                <span className="text-foreground-muted font-medium w-20 shrink-0">Manager</span>
+                <code className="flex-1 text-[11px] sm:text-xs font-mono bg-background-card px-3 py-1.5 rounded border border-border text-brand font-medium break-all text-left">
                   manager@smart.co.id / password123
                 </code>
               </div>

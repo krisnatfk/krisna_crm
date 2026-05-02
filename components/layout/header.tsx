@@ -65,7 +65,7 @@ export function Header({ collapsed, onMobileMenuToggle }: HeaderProps) {
     setTheme(resolvedTheme === "dark" ? "light" : "dark");
   };
 
-  // Close profile dropdown on outside click
+  // Tutup dropdown profil jika klik di luar elemen
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
       if (profileRef.current && !profileRef.current.contains(e.target as Node)) {
@@ -79,7 +79,7 @@ export function Header({ collapsed, onMobileMenuToggle }: HeaderProps) {
     return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
-  // Search Modal State & Shortcut
+  // State untuk Modal Pencarian & Tombol Pintas
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   useEffect(() => {
@@ -104,7 +104,7 @@ export function Header({ collapsed, onMobileMenuToggle }: HeaderProps) {
         collapsed && "md:ml-[72px]"
       )}
     >
-      {/* Mobile Menu Button */}
+      {/* Tombol Menu Mobile */}
       <Button
         variant="ghost"
         size="icon"
@@ -113,7 +113,7 @@ export function Header({ collapsed, onMobileMenuToggle }: HeaderProps) {
       >
         <Menu className="w-5 h-5" />
       </Button>
-      {/* Search Bar — desktop only */}
+      {/* Kolom Pencarian — Khusus Desktop */}
       <div className="flex-1 hidden md:block">
         <div className="relative max-w-md">
           <button
@@ -132,12 +132,12 @@ export function Header({ collapsed, onMobileMenuToggle }: HeaderProps) {
           </button>
         </div>
       </div>
-      {/* Mobile spacer */}
+      {/* Jarak Kosong Mobile */}
       <div className="flex-1 md:hidden" />
 
-      {/* Right Actions */}
+      {/* Aksi Kanan */}
       <div className="flex items-center gap-2 shrink-0">
-        {/* Theme Toggle */}
+        {/* Tombol Tema */}
         <Button
           variant="ghost"
           size="icon"
@@ -151,7 +151,7 @@ export function Header({ collapsed, onMobileMenuToggle }: HeaderProps) {
           )}
         </Button>
 
-        {/* Notifications */}
+        {/* Notifikasi */}
         <div className="relative" ref={notifRef}>
           <Button
             variant="ghost"
@@ -213,7 +213,7 @@ export function Header({ collapsed, onMobileMenuToggle }: HeaderProps) {
                     if (n.entity_type === "lead" && n.action === "created") title = "New lead signup";
                     else if (n.entity_type === "project" && n.action === "approved") title = "Project approved";
                     
-                    // Time ago
+                    // Waktu yang lalu
                     const diffMs = Date.now() - new Date(n.created_at).getTime();
                     const diffMin = Math.floor(diffMs / 60000);
                     const diffHr = Math.floor(diffMin / 60);
@@ -261,7 +261,7 @@ export function Header({ collapsed, onMobileMenuToggle }: HeaderProps) {
           )}
         </div>
 
-        {/* Avatar + Profile Dropdown */}
+        {/* Avatar & Dropdown Profil */}
         <div className="relative ml-2" ref={profileRef}>
           <button
             onClick={() => setShowProfile(!showProfile)}
@@ -274,7 +274,7 @@ export function Header({ collapsed, onMobileMenuToggle }: HeaderProps) {
 
           {showProfile && (
             <div className="absolute right-0 top-full mt-2 w-56 bg-background-card rounded-xl shadow-[var(--shadow-lg)] border border-border z-50 py-1.5 animate-scale-in overflow-hidden">
-              {/* User Info */}
+              {/* Info Pengguna */}
               <div className="px-4 py-3 border-b border-border">
                 <p className="text-sm font-semibold text-foreground">{user?.name}</p>
                 <p className="text-xs text-foreground-muted mt-0.5">{user?.email}</p>
@@ -283,7 +283,7 @@ export function Header({ collapsed, onMobileMenuToggle }: HeaderProps) {
                 </span>
               </div>
 
-              {/* Settings */}
+              {/* Pengaturan */}
               <div className="py-1 border-b border-border">
                 <Link
                   href="/settings"
@@ -295,7 +295,7 @@ export function Header({ collapsed, onMobileMenuToggle }: HeaderProps) {
                 </Link>
               </div>
 
-              {/* Log out */}
+              {/* Tombol Keluar */}
               <div className="py-1">
                 <button
                   onClick={() => {
@@ -313,15 +313,15 @@ export function Header({ collapsed, onMobileMenuToggle }: HeaderProps) {
         </div>
       </div>
 
-      {/* Search Modal (Command Palette) */}
+      {/* Modal Pencarian (Command Palette) */}
       {isSearchOpen && (
         <div className="fixed inset-0 z-[100] flex items-start justify-center pt-24 sm:pt-32 px-4">
-          {/* Backdrop */}
+          {/* Latar Belakang Gelap */}
           <div className="absolute inset-0 bg-black/40 backdrop-blur-sm animate-fade-in" onClick={() => setIsSearchOpen(false)} />
           
-          {/* Modal Content */}
+          {/* Konten Modal */}
           <div className="relative w-full max-w-2xl bg-background-card rounded-xl shadow-[var(--shadow-lg)] border border-border overflow-hidden animate-scale-in">
-            {/* Search Input Header */}
+            {/* Header Pencarian */}
             <div className="flex items-center px-4 border-b border-border">
               <Search className="w-5 h-5 text-foreground-muted shrink-0" />
               <input
@@ -335,7 +335,7 @@ export function Header({ collapsed, onMobileMenuToggle }: HeaderProps) {
               </kbd>
             </div>
             
-            {/* Results Area */}
+            {/* Area Hasil Pencarian */}
             <div className="p-2 max-h-[60vh] overflow-y-auto">
               <div className="px-2 py-1.5 text-xs font-semibold text-foreground-muted tracking-wider">QUICK ACTIONS</div>
               <div className="flex items-center gap-3 px-3 py-2.5 text-sm text-foreground hover:bg-background-hover rounded-lg cursor-pointer transition-colors" onClick={() => { setIsSearchOpen(false); router.push("/projects"); }}>

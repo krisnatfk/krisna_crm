@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
     const from = searchParams.get("from");
     const to = searchParams.get("to");
 
-    // Fetch projects (deals)
+    // Tarik semua data project/deal
     const projectFilter: Record<string, string> = {};
     if (user.role === "sales") projectFilter.sales_id = `eq.${user.userId}`;
     if (from) projectFilter["created_at"] = `gte.${from}`;
@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
       order: "created_at.desc",
     });
 
-    // Filter by 'to' date if provided
+    // Filter tanggal batas akhir jika ada
     let filteredProjects = projects;
     if (to) {
       const toDate = new Date(to);
@@ -30,17 +30,17 @@ export async function GET(request: NextRequest) {
       filteredProjects = projects.filter((p) => new Date(p.created_at) <= toDate);
     }
 
-    // Fetch leads count
+    // Hitung total lead
     const leadFilter: Record<string, string> = {};
     if (user.role === "sales") leadFilter.sales_id = `eq.${user.userId}`;
     const leads = await supabase.select<Lead>("leads", { filter: leadFilter });
 
-    // Fetch customers
+    // Tarik total pelanggan
     const customerFilter: Record<string, string> = {};
     if (user.role === "sales") customerFilter.sales_id = `eq.${user.userId}`;
     const customers = await supabase.select("customers", { filter: customerFilter });
 
-    // Calculate summary
+    // Kalkulasi ringkasan
     const approvedProjects = filteredProjects.filter((p) => p.status === "approved");
     const totalRevenue = approvedProjects.reduce((sum, p) => sum + Number(p.total_amount), 0);
     const totalDeals = filteredProjects.length;

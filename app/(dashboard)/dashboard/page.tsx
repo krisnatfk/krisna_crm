@@ -149,7 +149,7 @@ export default function DashboardPage() {
                   </div>
                 </div>
               </div>
-              {/* Sparkline — flush bottom, thin & smooth */}
+              {/* Sparkline minimalis di bawah */}
               <div className="h-[38px] w-full">
                 <ResponsiveContainer width="100%" height="100%" minWidth={1} minHeight={1}>
                   <AreaChart data={stat.chartData} margin={{ top: 4, right: 0, left: 0, bottom: 0 }}>
@@ -179,7 +179,7 @@ export default function DashboardPage() {
 
       {/* Tables Row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Recent Leads */}
+        {/* Daftar Lead Terbaru */}
         <Card className="animate-fade-in stagger-5">
           <CardHeader>
             <CardTitle>Lead Terbaru</CardTitle>
@@ -217,7 +217,7 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        {/* Recent Projects */}
+        {/* Daftar Project Terbaru */}
         <Card className="animate-fade-in stagger-6">
           <CardHeader>
             <CardTitle>Project Terbaru</CardTitle>
