@@ -67,6 +67,9 @@ export async function DELETE(
   const filter: Record<string, string> = { id: `eq.${id}` };
   if (user.role === "sales") filter.sales_id = `eq.${user.userId}`;
 
+  const lead = await supabase.selectOne("leads", { filter });
+  if (!lead) return NextResponse.json({ error: "Lead tidak ditemukan" }, { status: 404 });
+
   await supabase.delete("leads", filter);
   await logActivity({
     userId: user.userId,
@@ -74,7 +77,8 @@ export async function DELETE(
     action: "deleted",
     entityType: "lead",
     entityId: id,
-    details: `Lead dihapus`,
+    entityName: (lead.name as string) || "",
+    details: `Lead dihapus: ${lead.name}`,
   });
   return NextResponse.json({ success: true });
 }

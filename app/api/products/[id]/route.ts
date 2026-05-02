@@ -66,6 +66,12 @@ export async function DELETE(
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const { id } = await params;
+  const product = await supabase.selectOne("products", { filter: { id: `eq.${id}` } });
+  
+  if (!product) {
+    return NextResponse.json({ error: "Produk tidak ditemukan" }, { status: 404 });
+  }
+
   await supabase.delete("products", { id: `eq.${id}` });
   await logActivity({
     userId: user.userId,
@@ -73,7 +79,8 @@ export async function DELETE(
     action: "deleted",
     entityType: "product",
     entityId: id,
-    details: `Produk dihapus`,
+    entityName: (product.name as string) || "",
+    details: `Produk dihapus: ${product.name}`,
   });
   return NextResponse.json({ success: true });
 }
