@@ -7,6 +7,7 @@ import { useAuth } from "@/components/providers/auth-provider";
 import { formatRupiah, formatDate, formatDateTime, getLeadStatusConfig, getProjectStatusConfig, getInitials, generateAvatarColor } from "@/lib/utils";
 import { Users, UserCheck, FolderKanban, TrendingUp, ArrowUpRight, ArrowDownRight, Loader2, Plus, Edit2, Trash2, Check, X, FileDown, Clock } from "lucide-react";
 import { AreaChart, Area, ResponsiveContainer } from "recharts";
+import Link from "next/link";
 
 interface ActivityLog {
   id: string;
@@ -181,8 +182,11 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Daftar Lead Terbaru */}
         <Card className="animate-fade-in stagger-5">
-          <CardHeader>
+          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
             <CardTitle>Lead Terbaru</CardTitle>
+            <Link href="/leads" className="text-[11px] font-medium text-brand flex items-center gap-1">
+              Lihat Semua <ArrowUpRight className="w-3 h-3" />
+            </Link>
           </CardHeader>
           <CardContent>
             {data?.recentLeads?.length === 0 ? (
@@ -219,8 +223,11 @@ export default function DashboardPage() {
 
         {/* Daftar Project Terbaru */}
         <Card className="animate-fade-in stagger-6">
-          <CardHeader>
+          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
             <CardTitle>Project Terbaru</CardTitle>
+            <Link href="/projects" className="text-[11px] font-medium text-brand flex items-center gap-1">
+              Lihat Semua <ArrowUpRight className="w-3 h-3" />
+            </Link>
           </CardHeader>
           <CardContent>
             {data?.recentProjects?.length === 0 ? (
@@ -259,17 +266,20 @@ export default function DashboardPage() {
       {/* Activity Timeline */}
       {data?.recentActivities && data.recentActivities.length > 0 && (
         <Card className="animate-fade-in stagger-7">
-          <CardHeader>
+          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
             <CardTitle className="flex items-center gap-2">
               <Clock className="w-4 h-4 text-brand" /> Aktivitas Terbaru
             </CardTitle>
+            <Link href="/activity-log" className="text-[11px] font-medium text-brand flex items-center gap-1">
+              Lihat Semua <ArrowUpRight className="w-3 h-3" />
+            </Link>
           </CardHeader>
           <CardContent>
             <div className="relative">
               {/* Timeline line */}
               <div className="absolute left-[15px] top-2 bottom-2 w-px bg-border" />
               <div className="space-y-4">
-                {data.recentActivities.map((activity) => {
+                {data.recentActivities.slice(0, 5).map((activity) => {
                   const actionConfig: Record<string, { icon: React.ElementType; color: string; bg: string; label: string }> = {
                     created: { icon: Plus, color: "#ffffff", bg: "#16a34a", label: "Membuat" },
                     updated: { icon: Edit2, color: "#ffffff", bg: "#2563eb", label: "Memperbarui" },

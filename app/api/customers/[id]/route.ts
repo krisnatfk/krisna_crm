@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 import { getCurrentUser } from "@/lib/auth";
+import { logActivity } from "@/lib/activity-logger";
 
 export async function GET(
   request: NextRequest,
@@ -57,7 +58,21 @@ export async function PUT(
   }
 
   try {
-    await supabase.update("customers", { id: `eq.${id}` }, updateData);
+    const updated = await supabase.update("customers", { id: `eq.${id}` }, updateData);
+    
+    if (updated && updated.length > 0) {
+      const result = updated[0] as Record<string, unknown>;
+      await logActivity({
+        userId: user.userId,
+        userName: user.name,
+        action: "updated",
+        entityType: "customer",
+        entityId: id,
+        entityName: (result.name as string) || "",
+        details: `Pelanggan diperbarui: ${result.name}`,
+      });
+    }
+    
     return NextResponse.json({ success: true });
   } catch (e) {
     return NextResponse.json({ error: "Gagal memperbarui pelanggan" }, { status: 500 });
@@ -74,11 +89,27 @@ export async function DELETE(
   const { id } = await params;
 
   try {
+    const customerRow = await supabase.selectOne("customers", { filter: { id: `eq.${id}` } });
+    if (!customerRow) {
+      return NextResponse.json({ error: "Pelanggan tidak ditemukan" }, { status: 404 });
+    }
+    const customerData = customerRow as Record<string, unknown>;
+
     // Hapus layanan pelanggan
     await supabase.delete("customer_services", { customer_id: `eq.${id}` });
     
     // Hapus pelanggan
     await supabase.delete("customers", { id: `eq.${id}` });
+    
+    await logActivity({
+      userId: user.userId,
+      userName: user.name,
+      action: "deleted",
+      entityType: "customer",
+      entityId: id,
+      entityName: (customerData.name as string) || "",
+      details: `Pelanggan dihapus: ${customerData.name}`,
+    });
     
     return NextResponse.json({ success: true });
   } catch (e) {

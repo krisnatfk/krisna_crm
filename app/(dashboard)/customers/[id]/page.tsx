@@ -217,7 +217,7 @@ export default function CustomerDetailPage({ params }: { params: Promise<{ id: s
                 </div>
                 <div className="flex justify-between items-center p-4 px-5 bg-background-muted/30">
                   <span className="text-sm font-semibold text-foreground">Total/bulan</span>
-                  <span className="text-base font-bold text-brand">{formatRupiah(totalMonthly)}</span>
+                  <span className="text-base font-bold text-foreground">{formatRupiah(totalMonthly)}</span>
                 </div>
               </div>
             </CardContent>

@@ -51,7 +51,7 @@ export default function ActivityLogPage() {
   const [loading, setLoading] = useState(true);
   const [filterEntity, setFilterEntity] = useState("all");
   const [page, setPage] = useState(1);
-  const rowsPerPage = 15;
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   useEffect(() => { setPage(1); }, [filterEntity]);
 
@@ -212,8 +212,24 @@ export default function ActivityLogPage() {
 
               {/* Pagination */}
               <div className="flex flex-col sm:flex-row items-center justify-between px-5 py-4 border-t border-border gap-4 bg-background-muted/20">
-                <div className="text-sm text-foreground-muted text-center sm:text-left">
-                  Showing {logs.length > 0 ? (page - 1) * rowsPerPage + 1 : 0}-{Math.min(page * rowsPerPage, logs.length)} of {logs.length} results
+                <div className="flex items-center gap-4 text-sm text-foreground-muted">
+                  <div className="flex items-center gap-2">
+                    <span>Rows</span>
+                    <select
+                      className="border border-border rounded px-2 py-1 bg-background text-foreground text-xs outline-none focus:ring-1 focus:ring-brand"
+                      value={rowsPerPage}
+                      onChange={(e) => {
+                        setRowsPerPage(Number(e.target.value));
+                        setPage(1);
+                      }}
+                    >
+                      <option value={5}>5</option>
+                      <option value={10}>10</option>
+                      <option value={25}>25</option>
+                      <option value={50}>50</option>
+                    </select>
+                  </div>
+                  <span className="hidden sm:inline">Showing {logs.length > 0 ? (page - 1) * rowsPerPage + 1 : 0}-{Math.min(page * rowsPerPage, logs.length)} of {logs.length} results</span>
                 </div>
                 <div className="flex flex-wrap items-center justify-center gap-1">
                   <Button variant="ghost" size="sm" onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1} className="px-2 h-8">
