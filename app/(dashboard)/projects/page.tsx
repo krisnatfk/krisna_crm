@@ -32,6 +32,8 @@ interface ProjectData {
     negotiated_price: number;
     needs_approval: boolean;
   }[];
+  lead_name?: string;
+  sales_name?: string;
 }
 
 interface ItemForm {
