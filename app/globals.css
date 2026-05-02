@@ -219,3 +219,10 @@ body {
   background: linear-gradient(135deg, transparent 30%, rgba(13, 124, 90, 0.03) 100%);
   pointer-events: none;
 }
+
+/* ===== Form Fixes ===== */
+/* Hide native Edge/IE password reveal icon to prevent double eye icons */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
+}
