@@ -1,26 +1,221 @@
 @import "tailwindcss";
 
+/* ===== Light Theme (Default) ===== */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f8f9fb;
+  --background-card: #ffffff;
+  --background-sidebar: #111827;
+  --background-hover: #f1f5f9;
+  --background-muted: #f1f5f9;
+
+  --foreground: oklch(0.15 0.01 250);
+  --foreground-secondary: oklch(0.556 0.015 230);
+  --foreground-muted: oklch(0.556 0.015 230);
+  --foreground-sidebar: #cbd5e1;
+  --foreground-sidebar-active: #ffffff;
+
+  --brand: oklch(0.55 0.19 160);
+  --brand-light: #d1fae5;
+  --brand-dark: oklch(0.45 0.19 160);
+  --brand-foreground: #ffffff;
+
+  --success: oklch(0.55 0.19 160);
+  --success-bg: oklch(0.55 0.19 160 / 0.12);
+  --warning: oklch(0.60 0.18 70);
+  --warning-bg: oklch(0.60 0.18 70 / 0.12);
+  --error: oklch(0.52 0.22 25);
+  --error-bg: oklch(0.52 0.22 25 / 0.12);
+  --info: oklch(0.50 0.18 255);
+  --info-bg: oklch(0.50 0.18 255 / 0.12);
+  --purple: oklch(0.50 0.22 295);
+  --purple-bg: oklch(0.50 0.22 295 / 0.12);
+  --orange: oklch(0.58 0.20 50);
+  --orange-bg: oklch(0.58 0.20 50 / 0.12);
+
+  --border: #e2e8f0;
+  --border-light: #f1f5f9;
+
+  --radius-sm: 6px;
+  --radius: 8px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+
+  --sidebar-width: 260px;
+  --sidebar-collapsed: 72px;
+  --header-height: 64px;
 }
 
+/* ===== Dark Theme ===== */
+.dark {
+  --background: oklch(0.145 0 0);
+  --background-card: oklch(0.19 0 0);
+  --background-hover: oklch(0.24 0 0);
+  --background-muted: oklch(0.2 0 0);
+
+  --foreground: oklch(0.93 0.005 250);
+  --foreground-secondary: oklch(0.65 0.015 230);
+  --foreground-muted: oklch(0.556 0.015 230);
+
+  --success-bg: rgba(16, 185, 129, 0.15);
+  --warning-bg: rgba(245, 158, 11, 0.15);
+  --error-bg: rgba(239, 68, 68, 0.15);
+  --info-bg: rgba(59, 130, 246, 0.15);
+  --purple-bg: rgba(139, 92, 246, 0.15);
+  --orange-bg: rgba(249, 115, 22, 0.15);
+
+  --border: oklch(0.28 0 0);
+  --border-light: oklch(0.24 0 0);
+
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.2);
+}
+
+/* ===== Tailwind v4 Theme ===== */
 @theme inline {
   --color-background: var(--background);
+  --color-background-card: var(--background-card);
+  --color-background-sidebar: var(--background-sidebar);
+  --color-background-hover: var(--background-hover);
+  --color-background-muted: var(--background-muted);
+
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --color-foreground-secondary: var(--foreground-secondary);
+  --color-foreground-muted: var(--foreground-muted);
+
+  --color-brand: var(--brand);
+  --color-brand-light: var(--brand-light);
+  --color-brand-dark: var(--brand-dark);
+
+  --color-success: var(--success);
+  --color-success-bg: var(--success-bg);
+  --color-warning: var(--warning);
+  --color-warning-bg: var(--warning-bg);
+  --color-error: var(--error);
+  --color-error-bg: var(--error-bg);
+  --color-info: var(--info);
+  --color-info-bg: var(--info-bg);
+  --color-purple: var(--purple);
+  --color-purple-bg: var(--purple-bg);
+  --color-orange: var(--orange);
+  --color-orange-bg: var(--orange-bg);
+
+  --color-border: var(--border);
+  --color-border-light: var(--border-light);
+
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ===== Base Styles ===== */
+* {
+  border-color: var(--border);
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ===== Scrollbar ===== */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #334155;
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+.sidebar-scroll::-webkit-scrollbar-thumb {
+  background: transparent;
+  transition: background 0.2s;
+}
+.sidebar-scroll:hover::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+}
+.sidebar-scroll:hover::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* ===== Animations ===== */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-12px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+.animate-slide-in {
+  animation: slideInLeft 0.3s ease-out forwards;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.3s ease-out forwards;
+}
+
+.stagger-1 { animation-delay: 0.05s; }
+.stagger-2 { animation-delay: 0.1s; }
+.stagger-3 { animation-delay: 0.15s; }
+.stagger-4 { animation-delay: 0.2s; }
+.stagger-5 { animation-delay: 0.25s; }
+.stagger-6 { animation-delay: 0.3s; }
+.stagger-7 { animation-delay: 0.35s; }
+.stagger-8 { animation-delay: 0.4s; }
+
+/* ===== Component Utilities ===== */
+.stat-card-gradient {
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card-gradient::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 120px;
+  height: 100%;
+  background: linear-gradient(135deg, transparent 30%, rgba(13, 124, 90, 0.03) 100%);
+  pointer-events: none;
 }
