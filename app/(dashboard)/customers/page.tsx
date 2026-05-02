@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { formatRupiah, formatDate, getInitials, generateAvatarColor } from "@/lib/utils";
 import { Search, Loader2, Wifi, Download, ChevronLeft, ChevronRight, MessageCircle } from "lucide-react";
+import { exportToExcel } from "@/lib/export";
 
 interface CustomerService {
   id: string;
@@ -58,6 +59,24 @@ export default function CustomersPage() {
   const totalPages = Math.ceil(filteredCustomers.length / rowsPerPage) || 1;
   const paginatedCustomers = filteredCustomers.slice((page - 1) * rowsPerPage, page * rowsPerPage);
 
+  const handleExport = () => {
+    const dataToExport = filteredCustomers.map((c, i) => {
+      const activeServices = c.services?.filter(s => s.status === "active") || [];
+      const totalMonthly = activeServices.reduce((sum, s) => sum + Number(s.price), 0);
+      return {
+        No: i + 1,
+        Pelanggan: c.name,
+        Perusahaan: c.company || "-",
+        Kontak: c.contact,
+        Email: c.email || "-",
+        Alamat: c.address || "-",
+        "Total Layanan": activeServices.length,
+        "Total Tagihan Bulanan": totalMonthly
+      };
+    });
+    exportToExcel(dataToExport, "Data_Pelanggan", "Pelanggan");
+  };
+
   return (
     <div className="space-y-6">
       <div>
@@ -80,7 +99,7 @@ export default function CustomersPage() {
               />
             </div>
             <div className="flex items-center gap-3">
-              <Button variant="outline" size="sm" className="hidden sm:flex gap-1.5 h-9">
+              <Button variant="outline" size="sm" className="hidden sm:flex gap-1.5 h-9" onClick={handleExport}>
                 <Download className="w-3.5 h-3.5" /> Export
               </Button>
             </div>

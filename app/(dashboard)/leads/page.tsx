@@ -13,6 +13,7 @@ import type { Lead, LeadStatus } from "@/types";
 import { Plus, Search, Edit2, Trash2, Loader2, Download, ArrowUpDown, ChevronLeft, ChevronRight, MessageCircle } from "lucide-react";
 import { ColumnToggle, useColumnVisibility } from "@/components/ui/column-toggle";
 import { useRouter } from "next/navigation";
+import { exportToExcel } from "@/lib/export";
 
 const statusOptions = [
   { value: "all", label: "Semua Status" },
@@ -143,6 +144,21 @@ export default function LeadsPage() {
     }
   };
 
+  const handleExport = () => {
+    const dataToExport = leads.map((l, i) => ({
+      No: i + 1,
+      Nama: l.name,
+      Perusahaan: l.company || "-",
+      Kontak: l.contact,
+      Email: l.email || "-",
+      Alamat: l.address || "-",
+      Kebutuhan: l.needs || "-",
+      Status: getLeadStatusConfig(l.status).label,
+      "Tanggal Dibuat": formatDate(l.created_at)
+    }));
+    exportToExcel(dataToExport, "Data_Leads", "Leads");
+  };
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -178,7 +194,7 @@ export default function LeadsPage() {
                 className="w-[150px] sm:w-40"
               />
               <ColumnToggle columns={leadsColumns} visibleColumns={visibleColumns} onChange={toggleColumn} />
-              <Button variant="outline" size="sm" className="hidden sm:flex gap-1.5 h-9 shrink-0">
+              <Button variant="outline" size="sm" className="hidden sm:flex gap-1.5 h-9 shrink-0" onClick={handleExport}>
                 <Download className="w-3.5 h-3.5" /> Export
               </Button>
             </div>

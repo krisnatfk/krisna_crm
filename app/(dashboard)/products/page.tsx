@@ -11,6 +11,7 @@ import { formatRupiah, calculateSellPrice } from "@/lib/utils";
 import type { Product } from "@/types";
 import { Plus, Search, Edit2, Trash2, Loader2, Download, ArrowUpDown, ChevronLeft, ChevronRight, Wifi } from "lucide-react";
 import { ColumnToggle, useColumnVisibility } from "@/components/ui/column-toggle";
+import { exportToExcel } from "@/lib/export";
 import { useRouter } from "next/navigation";
 
 const emptyForm = { name: "", description: "", speed: "", hpp: 0, margin_percent: 0, is_active: true };
@@ -93,6 +94,19 @@ export default function ProductsPage() {
   );
   const paginatedProducts = filteredProducts.slice((page - 1) * rowsPerPage, page * rowsPerPage);
 
+  const handleExport = () => {
+    const dataToExport = filteredProducts.map((p, i) => ({
+      No: i + 1,
+      Produk: p.product_name,
+      Kecepatan: p.speed,
+      HPP: Number(p.base_price),
+      Margin: p.margin_percent + "%",
+      "Harga Jual": Number(p.sell_price),
+      Deskripsi: p.description || "-"
+    }));
+    exportToExcel(dataToExport, "Data_Produk", "Produk");
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -121,7 +135,7 @@ export default function ProductsPage() {
             </div>
             <div className="flex items-center gap-3">
               <ColumnToggle columns={productColumns} visibleColumns={visibleColumns} onChange={toggleColumn} />
-              <Button variant="outline" size="sm" className="hidden sm:flex gap-1.5 h-9">
+              <Button variant="outline" size="sm" className="hidden sm:flex gap-1.5 h-9" onClick={handleExport}>
                 <Download className="w-3.5 h-3.5" /> Export
               </Button>
             </div>

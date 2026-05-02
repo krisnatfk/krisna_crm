@@ -31,8 +31,9 @@ export default function LoginPage() {
         return;
       }
 
-      router.push("/dashboard");
-      router.refresh();
+      // Gunakan window.location.href agar seluruh context dan state di-reset 
+      // dan memicu fetchUser() ulang dengan cookie session yang baru.
+      window.location.href = "/dashboard";
     } catch {
       setError("Terjadi kesalahan. Silakan coba lagi.");
     } finally {

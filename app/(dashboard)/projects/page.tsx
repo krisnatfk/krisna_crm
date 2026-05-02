@@ -12,6 +12,7 @@ import { useAuth } from "@/components/providers/auth-provider";
 import { formatRupiah, formatDate, getProjectStatusConfig } from "@/lib/utils";
 import type { Product, Lead } from "@/types";
 import { Plus, Loader2, FolderKanban, Check, X, AlertTriangle, Trash2, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Search, SlidersHorizontal, Download } from "lucide-react";
+import { exportToExcel } from "@/lib/export";
 
 interface ProjectData {
   id: string;
@@ -168,6 +169,19 @@ export default function ProjectsPage() {
     { value: "rejected", label: "Ditolak" },
   ];
 
+  const handleExport = () => {
+    const dataToExport = projects.map((p, i) => ({
+      No: i + 1,
+      Project: p.project_name,
+      Klien: p.lead_name,
+      Sales: p.sales_name,
+      "Total Amount": Number(p.total_amount),
+      Status: p.status === "approved" ? "Disetujui" : p.status === "rejected" ? "Ditolak" : "Menunggu Approval",
+      "Tanggal Dibuat": formatDate(p.created_at)
+    }));
+    exportToExcel(dataToExport, "Data_Projects", "Projects");
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -196,7 +210,7 @@ export default function ProjectsPage() {
             </div>
             <div className="flex items-center gap-3">
               <Select options={statusFilters} value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)} className="w-[180px] sm:w-56" />
-              <Button variant="outline" size="sm" className="hidden sm:flex gap-1.5 h-9 shrink-0">
+              <Button variant="outline" size="sm" className="hidden sm:flex gap-1.5 h-9 shrink-0" onClick={handleExport}>
                 <Download className="w-3.5 h-3.5" /> Export
               </Button>
             </div>
