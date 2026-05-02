@@ -198,12 +198,12 @@ export function Header({ collapsed, onMobileMenuToggle }: HeaderProps) {
                     const isUnread = new Date(n.created_at).getTime() > lastReadTime;
                     
                     const actionConfig: Record<string, { icon: React.ElementType; color: string; bg: string; label: string; title: string }> = {
-                      created: { icon: Plus, color: "#16a34a", bg: "#dcfce7", label: "membuat", title: "New created" },
-                      updated: { icon: Edit2, color: "#2563eb", bg: "#dbeafe", label: "memperbarui", title: "Update processed" },
-                      deleted: { icon: Trash2, color: "#dc2626", bg: "#fee2e2", label: "menghapus", title: "Item deleted" },
-                      approved: { icon: CheckCircle2, color: "#16a34a", bg: "#dcfce7", label: "menyetujui", title: "Approval processed" },
-                      rejected: { icon: X, color: "#dc2626", bg: "#fee2e2", label: "menolak", title: "Item rejected" },
-                      exported: { icon: FileDown, color: "#8b5cf6", bg: "#ede9fe", label: "mengekspor", title: "Export completed" },
+                      created: { icon: Plus, color: "#ffffff", bg: "#16a34a", label: "membuat", title: "New created" },
+                      updated: { icon: Edit2, color: "#ffffff", bg: "#2563eb", label: "memperbarui", title: "Update processed" },
+                      deleted: { icon: Trash2, color: "#ffffff", bg: "#dc2626", label: "menghapus", title: "Item deleted" },
+                      approved: { icon: CheckCircle2, color: "#ffffff", bg: "#16a34a", label: "menyetujui", title: "Approval processed" },
+                      rejected: { icon: X, color: "#ffffff", bg: "#dc2626", label: "menolak", title: "Item rejected" },
+                      exported: { icon: FileDown, color: "#ffffff", bg: "#8b5cf6", label: "mengekspor", title: "Export completed" },
                     };
                     const config = actionConfig[n.action] || actionConfig.created;
                     const ActionIcon = config.icon;

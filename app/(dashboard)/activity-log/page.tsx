@@ -21,12 +21,12 @@ interface ActivityLog {
 }
 
 const actionConfig: Record<string, { icon: React.ElementType; color: string; bg: string; label: string }> = {
-  created: { icon: Plus, color: "#16a34a", bg: "#dcfce7", label: "Dibuat" },
-  updated: { icon: Edit2, color: "#2563eb", bg: "#dbeafe", label: "Diperbarui" },
-  deleted: { icon: Trash2, color: "#dc2626", bg: "#fee2e2", label: "Dihapus" },
-  approved: { icon: Check, color: "#16a34a", bg: "#dcfce7", label: "Disetujui" },
-  rejected: { icon: X, color: "#dc2626", bg: "#fee2e2", label: "Ditolak" },
-  exported: { icon: FileDown, color: "#8b5cf6", bg: "#ede9fe", label: "Diexport" },
+  created: { icon: Plus, color: "#ffffff", bg: "#16a34a", label: "Dibuat" },
+  updated: { icon: Edit2, color: "#ffffff", bg: "#2563eb", label: "Diperbarui" },
+  deleted: { icon: Trash2, color: "#ffffff", bg: "#dc2626", label: "Dihapus" },
+  approved: { icon: Check, color: "#ffffff", bg: "#16a34a", label: "Disetujui" },
+  rejected: { icon: X, color: "#ffffff", bg: "#dc2626", label: "Ditolak" },
+  exported: { icon: FileDown, color: "#ffffff", bg: "#8b5cf6", label: "Diexport" },
 };
 
 const entityLabels: Record<string, string> = {

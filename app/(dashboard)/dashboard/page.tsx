@@ -271,12 +271,12 @@ export default function DashboardPage() {
               <div className="space-y-4">
                 {data.recentActivities.map((activity) => {
                   const actionConfig: Record<string, { icon: React.ElementType; color: string; bg: string; label: string }> = {
-                    created: { icon: Plus, color: "#16a34a", bg: "#dcfce7", label: "Membuat" },
-                    updated: { icon: Edit2, color: "#2563eb", bg: "#dbeafe", label: "Memperbarui" },
-                    deleted: { icon: Trash2, color: "#dc2626", bg: "#fee2e2", label: "Menghapus" },
-                    approved: { icon: Check, color: "#16a34a", bg: "#dcfce7", label: "Menyetujui" },
-                    rejected: { icon: X, color: "#dc2626", bg: "#fee2e2", label: "Menolak" },
-                    exported: { icon: FileDown, color: "#8b5cf6", bg: "#ede9fe", label: "Export" },
+                    created: { icon: Plus, color: "#ffffff", bg: "#16a34a", label: "Membuat" },
+                    updated: { icon: Edit2, color: "#ffffff", bg: "#2563eb", label: "Memperbarui" },
+                    deleted: { icon: Trash2, color: "#ffffff", bg: "#dc2626", label: "Menghapus" },
+                    approved: { icon: Check, color: "#ffffff", bg: "#16a34a", label: "Menyetujui" },
+                    rejected: { icon: X, color: "#ffffff", bg: "#dc2626", label: "Menolak" },
+                    exported: { icon: FileDown, color: "#ffffff", bg: "#8b5cf6", label: "Export" },
                   };
                   const config = actionConfig[activity.action] || actionConfig.created;
                   const ActionIcon = config.icon;
