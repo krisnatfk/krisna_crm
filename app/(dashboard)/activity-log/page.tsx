@@ -82,17 +82,20 @@ export default function ActivityLogPage() {
       {/* Filters */}
       <Card>
         <CardContent className="p-4">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 w-full">
-            <div className="flex items-center gap-2 text-sm text-foreground-muted">
-              <History className="w-4 h-4" />
-              <span className="hidden sm:inline">Filter:</span>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
+              <History className="w-4 h-4 text-brand" />
+              <span>Filter Aktivitas</span>
             </div>
-            <Select
-              options={entityFilters}
-              value={filterEntity}
-              onChange={(e) => setFilterEntity(e.target.value)}
-              className="w-[180px] sm:w-56"
-            />
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 w-full sm:w-auto">
+              <span className="text-xs text-foreground-muted sm:hidden">Pilih Modul:</span>
+              <Select
+                options={entityFilters}
+                value={filterEntity}
+                onChange={(e) => setFilterEntity(e.target.value)}
+                className="w-full sm:w-[220px]"
+              />
+            </div>
           </div>
         </CardContent>
       </Card>
@@ -212,37 +215,40 @@ export default function ActivityLogPage() {
 
               {/* Pagination */}
               <div className="flex flex-col sm:flex-row items-center justify-between px-5 py-4 border-t border-border gap-4 bg-background-muted/20">
-                <div className="flex items-center gap-4 text-sm text-foreground-muted">
-                  <div className="flex items-center gap-2">
-                    <span>Rows</span>
-                    <select
-                      className="border border-border rounded px-2 py-1 bg-background text-foreground text-xs outline-none focus:ring-1 focus:ring-brand"
-                      value={rowsPerPage}
-                      onChange={(e) => {
-                        setRowsPerPage(Number(e.target.value));
-                        setPage(1);
-                      }}
-                    >
-                      <option value={5}>5</option>
-                      <option value={10}>10</option>
-                      <option value={25}>25</option>
-                      <option value={50}>50</option>
-                    </select>
-                  </div>
-                  <span className="hidden sm:inline">Showing {logs.length > 0 ? (page - 1) * rowsPerPage + 1 : 0}-{Math.min(page * rowsPerPage, logs.length)} of {logs.length} results</span>
+                <div className="text-sm text-foreground-muted text-center sm:text-left order-1 sm:order-none w-full sm:w-auto">
+                  Showing {logs.length > 0 ? (page - 1) * rowsPerPage + 1 : 0}-{Math.min(page * rowsPerPage, logs.length)} of {logs.length} results
                 </div>
-                <div className="flex flex-wrap items-center justify-center gap-1">
-                  <Button variant="ghost" size="sm" onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1} className="px-2 h-8">
-                    <ChevronLeft className="w-4 h-4 sm:mr-1" /> <span className="hidden sm:inline">Previous</span>
-                  </Button>
-                  <div className="flex flex-wrap items-center justify-center gap-1">
-                    {Array.from({ length: totalPages }).map((_, i) => (
-                      <Button key={i} variant={page === i + 1 ? "primary" : "ghost"} size="icon" className="w-8 h-8 rounded-md text-xs" onClick={() => setPage(i + 1)}>{i + 1}</Button>
-                    ))}
+                
+                <div className="flex items-center justify-center gap-3 order-2 sm:order-none w-full sm:w-auto">
+                  <select
+                    className="border border-border rounded-md px-2.5 py-1.5 bg-background text-foreground text-sm outline-none focus:ring-1 focus:ring-brand w-[70px] cursor-pointer"
+                    value={rowsPerPage}
+                    onChange={(e) => {
+                      setRowsPerPage(Number(e.target.value));
+                      setPage(1);
+                    }}
+                  >
+                    <option value={5}>5</option>
+                    <option value={10}>10</option>
+                    <option value={25}>25</option>
+                    <option value={50}>50</option>
+                  </select>
+
+                  <div className="flex items-center justify-center gap-1">
+                    <Button variant="ghost" size="icon" onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1} className="w-8 h-8 rounded-md text-foreground-muted hover:text-foreground">
+                      <ChevronLeft className="w-4 h-4" />
+                    </Button>
+                    <div className="flex items-center justify-center gap-1">
+                      {Array.from({ length: totalPages }).map((_, i) => (
+                        <Button key={i} variant={page === i + 1 ? "primary" : "ghost"} size="icon" className={`w-8 h-8 rounded-md text-sm font-medium ${page !== i + 1 ? "text-foreground-muted hover:text-foreground" : ""}`} onClick={() => setPage(i + 1)}>
+                          {i + 1}
+                        </Button>
+                      ))}
+                    </div>
+                    <Button variant="ghost" size="icon" onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page >= totalPages} className="w-8 h-8 rounded-md text-foreground-muted hover:text-foreground">
+                      <ChevronRight className="w-4 h-4" />
+                    </Button>
                   </div>
-                  <Button variant="ghost" size="sm" onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page >= totalPages} className="px-2 h-8">
-                    <span className="hidden sm:inline">Next</span> <ChevronRight className="w-4 h-4 sm:ml-1" />
-                  </Button>
                 </div>
               </div>
             </div>
