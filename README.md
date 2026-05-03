@@ -97,9 +97,8 @@ npm install
 
 Buka **SQL Editor** pada *dashboard* Supabase Anda dan jalankan *script* secara berurutan:
 1. Copy-paste isi `database/schema.sql` (Termasuk perintah *ALTER TABLE* untuk `avatar_url`).
-2. Copy-paste isi `database/activity_logs.sql`.
-3. Copy-paste isi `database/seed_dummy_data.sql` (Terdapat skenario transaksi riil dengan diskon manajer dan multi-produk).
-4. *(Optional)* Jalankan `NOTIFY pgrst, 'reload schema';` jika API Cache belum me-*refresh* kolom profil gambar.
+2. Copy-paste isi `database/seed_dummy_data.sql` (Terdapat skenario transaksi riil dengan diskon manajer dan multi-produk).
+3. *(Optional)* Jalankan `NOTIFY pgrst, 'reload schema';` jika API Cache belum me-*refresh* kolom profil gambar.
 
 ### 3. Setup Environment Variables
 
